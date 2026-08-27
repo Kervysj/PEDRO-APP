@@ -8,31 +8,13 @@
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/tabler-icons.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #1e3a8a;
-            --secondary: #f97316;
-            --accent: #3b82f6;
-            --success: #10b981;
-            --danger: #ef4444;
-            --gray: #6b7280;
-            --light: #f3f4f6;
-            --dark: #1f2937;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 10px;
-            line-height: 1.6;
         }
-
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -41,99 +23,30 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             overflow: hidden;
         }
-
-        /* Header */
         .header {
-            background: linear-gradient(135deg, var(--primary) 0%, #2563eb 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
             color: white;
             padding: 20px;
             text-align: center;
-            position: relative;
         }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
-
+        .logo-container { margin-bottom: 15px; }
         .logo-img {
-            max-width: 180px;
+            max-width: 200px;
             height: auto;
-            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
-        }
-
-        .company-info {
-            text-align: center;
-            font-size: 14px;
-            opacity: 0.95;
-        }
-
-        .company-info h1 {
-            font-size: 28px;
-            margin-bottom: 5px;
-            font-weight: 700;
-        }
-
-        .company-info p {
-            font-size: 13px;
-            margin: 2px 0;
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: rgba(255,255,255,0.2);
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            backdrop-filter: blur(10px);
-        }
-
-        .status-badge.online {
-            background: var(--success);
-        }
-
-        .status-badge.offline {
-            background: var(--danger);
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
             background: white;
-            animation: pulse 2s infinite;
+            padding: 10px;
+            border-radius: 8px;
         }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        /* Toolbar */
+        .company-info h1 { font-size: 24px; margin-bottom: 5px; }
+        .company-info p { font-size: 13px; opacity: 0.9; }
         .toolbar {
             display: flex;
             gap: 10px;
-            padding: 15px 20px;
-            background: var(--light);
-            border-bottom: 2px solid #e5e7eb;
+            padding: 15px;
+            background: #f3f4f6;
             flex-wrap: wrap;
             justify-content: center;
         }
-
         .btn {
             padding: 10px 20px;
             border: none;
@@ -144,155 +57,73 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s ease;
-            text-decoration: none;
+            transition: all 0.3s;
         }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-info {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-warning {
-            background: var(--secondary);
-            color: white;
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: var(--gray);
-            color: white;
-        }
-
-        /* Content */
-        .content {
-            padding: 20px;
-        }
-
-        .section {
-            margin-bottom: 25px;
-        }
-
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .btn-primary { background: #1e3a8a; color: white; }
+        .btn-success { background: #10b981; color: white; }
+        .btn-warning { background: #f97316; color: white; }
+        .btn-info { background: #3b82f6; color: white; }
+        .content { padding: 20px; }
+        .section { margin-bottom: 25px; }
         .section-title {
             font-size: 18px;
-            color: var(--primary);
+            color: #1e3a8a;
             margin-bottom: 15px;
             padding-bottom: 8px;
-            border-bottom: 3px solid var(--secondary);
+            border-bottom: 3px solid #f97316;
             display: flex;
             align-items: center;
             gap: 10px;
         }
-
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 15px;
         }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
+        .form-group { display: flex; flex-direction: column; }
         .form-group label {
             font-weight: 600;
-            color: var(--dark);
             margin-bottom: 5px;
             font-size: 14px;
         }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            padding: 10px 12px;
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 10px;
             border: 2px solid #e5e7eb;
             border-radius: 8px;
             font-size: 14px;
-            transition: all 0.3s ease;
-            font-family: inherit;
         }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        .form-group input:focus, .form-group textarea:focus {
             outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: #3b82f6;
         }
-
         .form-group textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 60px;
             white-space: pre-wrap;
             word-wrap: break-word;
-            overflow-wrap: break-word;
         }
-
-        /* Table */
         .table-container {
             overflow-x: auto;
             margin-bottom: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
             min-width: 700px;
         }
-
         thead {
-            background: linear-gradient(135deg, var(--primary), #2563eb);
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
             color: white;
         }
-
         th, td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #e5e7eb;
         }
-
-        th {
-            font-weight: 600;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        tbody tr:hover {
-            background: #f9fafb;
-        }
-
-        .col-num { width: 50px; text-align: center; }
-        .col-desc { min-width: 250px; }
-        .col-unit { width: 120px; }
-        .col-qty { width: 100px; }
-        .col-price { width: 120px; }
-        .col-subtotal { width: 120px; font-weight: 600; color: var(--primary); }
-        .col-action { width: 60px; text-align: center; }
-
+        th { font-weight: 600; text-transform: uppercase; font-size: 13px; }
+        tbody tr:hover { background: #f9fafb; }
         .item-input {
             width: 100%;
             padding: 8px;
@@ -300,92 +131,49 @@
             border-radius: 6px;
             font-size: 13px;
         }
-
-        .item-input:focus {
-            border-color: var(--accent);
-            outline: none;
-        }
-
         .btn-icon {
             width: 32px;
             height: 32px;
             border-radius: 6px;
             border: none;
             cursor: pointer;
+            background: #fee2e2;
+            color: #ef4444;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
         }
-
-        .btn-icon-danger {
-            background: #fee2e2;
-            color: var(--danger);
-        }
-
-        .btn-icon-danger:hover {
-            background: var(--danger);
-            color: white;
-        }
-
-        /* Totals */
+        .btn-icon:hover { background: #ef4444; color: white; }
         .totals-section {
             background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
             padding: 20px;
             border-radius: 8px;
             margin-top: 20px;
         }
-
         .total-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             padding: 10px 0;
             border-bottom: 1px solid #cbd5e1;
         }
-
         .total-row:last-child {
             border-bottom: none;
             font-size: 24px;
             font-weight: 700;
-            color: var(--primary);
+            color: #1e3a8a;
             margin-top: 10px;
             padding-top: 15px;
-            border-top: 3px solid var(--secondary);
+            border-top: 3px solid #f97316;
         }
-
-        .total-label {
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .total-value {
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        /* Validity */
         .validity-section {
             background: #fef3c7;
-            border-left: 4px solid var(--secondary);
+            border-left: 4px solid #f97316;
             padding: 15px;
             border-radius: 6px;
             margin-top: 20px;
         }
-
-        .validity-section h3 {
-            color: #92400e;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-
-        .validity-inputs {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-
+        .validity-section h3 { color: #92400e; margin-bottom: 10px; }
+        .validity-inputs { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
         .validity-inputs input {
             width: 80px;
             padding: 8px;
@@ -393,22 +181,12 @@
             border-radius: 6px;
             text-align: center;
         }
-
-        .note {
-            margin-top: 10px;
-            font-size: 13px;
-            color: #78350f;
-            font-style: italic;
-        }
-
-        /* Footer */
         .footer {
-            background: var(--light);
+            background: #f3f4f6;
             padding: 20px;
             text-align: center;
             border-top: 2px solid #e5e7eb;
         }
-
         .footer-actions {
             display: flex;
             gap: 10px;
@@ -416,13 +194,6 @@
             flex-wrap: wrap;
             margin-bottom: 15px;
         }
-
-        .footer-info {
-            font-size: 13px;
-            color: var(--gray);
-        }
-
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -436,11 +207,7 @@
             justify-content: center;
             padding: 20px;
         }
-
-        .modal.active {
-            display: flex;
-        }
-
+        .modal.active { display: flex; }
         .modal-content {
             background: white;
             border-radius: 12px;
@@ -448,49 +215,24 @@
             width: 100%;
             max-height: 80vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-
         .modal-header {
-            background: linear-gradient(135deg, var(--primary), #2563eb);
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
             color: white;
             padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-
-        .modal-header h2 {
-            font-size: 20px;
-        }
-
         .modal-close {
             background: none;
             border: none;
             color: white;
             font-size: 24px;
             cursor: pointer;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-            transition: background 0.3s;
         }
-
-        .modal-close:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        .modal-body {
-            padding: 20px;
-        }
-
-        .history-list {
-            list-style: none;
-        }
-
+        .modal-body { padding: 20px; }
+        .history-list { list-style: none; }
         .history-item {
             padding: 15px;
             border: 2px solid #e5e7eb;
@@ -499,204 +241,39 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s;
         }
-
-        .history-item:hover {
-            border-color: var(--accent);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .history-info h4 {
-            color: var(--primary);
-            margin-bottom: 5px;
-        }
-
-        .history-info p {
-            font-size: 13px;
-            color: var(--gray);
-        }
-
-        .history-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            body {
-                padding: 5px;
-            }
-
-            .header {
-                padding: 15px 10px;
-            }
-
-            .logo-img {
-                max-width: 140px;
-            }
-
-            .company-info h1 {
-                font-size: 22px;
-            }
-
-            .company-info p {
-                font-size: 12px;
-            }
-
-            .toolbar {
-                padding: 10px;
-            }
-
-            .btn {
-                padding: 8px 15px;
-                font-size: 13px;
-                flex: 1;
-                min-width: 140px;
-                justify-content: center;
-            }
-
-            .content {
-                padding: 15px 10px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            table {
-                font-size: 12px;
-            }
-
-            th, td {
-                padding: 8px;
-            }
-
-            .item-input {
-                padding: 6px;
-                font-size: 12px;
-            }
-
-            .total-row {
-                font-size: 16px;
-            }
-
-            .footer-actions {
-                flex-direction: column;
-            }
-
-            .footer-actions .btn {
-                width: 100%;
-            }
-
-            .hide-mobile {
-                display: none;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .logo-container {
-                flex-direction: column;
-            }
-
-            .btn {
-                min-width: 100%;
-            }
-
-            .validity-inputs {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-
-        /* Print styles */
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
-
-            .container {
-                box-shadow: none;
-                max-width: 100%;
-            }
-
-            .toolbar, .footer-actions, .btn-icon {
-                display: none !important;
-            }
-        }
-
-        /* Loading */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Notification */
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: var(--success);
+            background: #10b981;
             color: white;
             padding: 15px 25px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             display: none;
-            align-items: center;
-            gap: 10px;
             z-index: 2000;
-            animation: slideIn 0.3s ease;
         }
-
-        .notification.show {
-            display: flex;
-        }
-
-        .notification.error {
-            background: var(--danger);
-        }
-
+        .notification.show { display: block; animation: slideIn 0.3s; }
+        .notification.error { background: #ef4444; }
         @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @media (max-width: 768px) {
+            .btn { flex: 1; min-width: 140px; justify-content: center; }
+            table { font-size: 12px; }
+            .form-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <header class="header">
-            <div class="header-top">
-                <div class="status-badge online" id="connection-status">
-                    <span class="status-dot"></span>
-                    <span id="status-text">En línea</span>
-                </div>
-                <div class="status-badge">
-                    <i class="ti ti-calendar"></i>
-                    <span id="current-date"></span>
-                </div>
-            </div>
-            
             <div class="logo-container">
-                <img src="logo-plf.png" alt="PLF Soluciones de Gas" class="logo-img" id="logo-img">
+                <img src="https://raw.githubusercontent.com/Kervysj/PEDRO-APP/main/11111.jpg" 
+                     alt="PLF Soluciones de Gas" class="logo-img" id="logo-img" crossorigin="anonymous">
             </div>
-            
             <div class="company-info">
                 <h1>PLF SOLUCIONES DE GAS</h1>
                 <p>RIF: J-50242520-0 · El Tigre, Edo. Anzoátegui</p>
@@ -704,77 +281,70 @@
             </div>
         </header>
 
-        <!-- Toolbar -->
         <div class="toolbar">
             <button class="btn btn-primary" onclick="nuevaCotizacion()">
-                <i class="ti ti-plus"></i> Nueva Cotización
+                <i class="ti ti-plus"></i> Nueva
             </button>
             <button class="btn btn-info" onclick="guardarCotizacion()">
                 <i class="ti ti-device-floppy"></i> Guardar
             </button>
             <button class="btn btn-success" onclick="generarPDF()">
-                <i class="ti ti-file-pdf"></i> Descargar PDF
+                <i class="ti ti-file-pdf"></i> PDF
             </button>
             <button class="btn btn-warning" onclick="enviarWhatsApp()">
                 <i class="ti ti-brand-whatsapp"></i> WhatsApp
             </button>
-            <button class="btn btn-secondary" onclick="mostrarHistorial()">
+            <button class="btn btn-primary" onclick="mostrarHistorial()">
                 <i class="ti ti-history"></i> Historial
             </button>
         </div>
 
-        <!-- Content -->
         <div class="content">
-            <h2 style="text-align: center; color: var(--primary); margin-bottom: 20px; font-size: 28px;">
+            <h2 style="text-align: center; color: #1e3a8a; margin-bottom: 20px;">
                 COTIZACIÓN Nº <span id="cotizacion-numero">--</span>
             </h2>
+            <div style="text-align: right; margin-bottom: 20px; color: #6b7280;">
+                Fecha: <span id="fecha-actual"></span>
+            </div>
 
-            <!-- Client Data -->
             <div class="section">
-                <h3 class="section-title">
-                    <i class="ti ti-user"></i> Datos del Cliente
-                </h3>
+                <h3 class="section-title"><i class="ti ti-user"></i> Datos del Cliente</h3>
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="cliente-nombre">Nombre del Cliente *</label>
-                        <input type="text" id="cliente-nombre" placeholder="Nombre completo o razón social" required>
+                        <label>Nombre del Cliente *</label>
+                        <input type="text" id="cliente-nombre" placeholder="Nombre completo">
                     </div>
                     <div class="form-group">
-                        <label for="cliente-telefono">Teléfono / Contacto *</label>
-                        <input type="text" id="cliente-telefono" placeholder="Ej: 0414-1234567" required>
+                        <label>Teléfono / Contacto *</label>
+                        <input type="text" id="cliente-telefono" placeholder="0414-1234567">
                     </div>
                     <div class="form-group">
-                        <label for="cliente-email">Correo Electrónico</label>
+                        <label>Correo Electrónico</label>
                         <input type="email" id="cliente-email" placeholder="correo@ejemplo.com">
                     </div>
                     <div class="form-group">
-                        <label for="cliente-direccion">Dirección</label>
+                        <label>Dirección</label>
                         <input type="text" id="cliente-direccion" placeholder="Dirección completa">
                     </div>
                 </div>
             </div>
 
-            <!-- Items Table -->
             <div class="section">
-                <h3 class="section-title">
-                    <i class="ti ti-list"></i> Ítems de la Cotización
-                </h3>
+                <h3 class="section-title"><i class="ti ti-list"></i> Ítems de la Cotización</h3>
                 <div class="table-container">
                     <table id="items-table">
                         <thead>
                             <tr>
-                                <th class="col-num">#</th>
-                                <th class="col-desc">Descripción del Producto/Servicio</th>
-                                <th class="col-unit">Unidad</th>
-                                <th class="col-qty">Cant.</th>
-                                <th class="col-price">Precio ($)</th>
-                                <th class="col-subtotal">Subtotal</th>
-                                <th class="col-action"></th>
+                                <th style="width: 50px;">#</th>
+                                <th style="min-width: 250px;">Descripción del producto</th>
+                                <th style="width: 120px;">Unidad</th>
+                                <th style="width: 100px;">Cant.</th>
+                                <th style="width: 120px;">Precio ($)</th>
+                                <th style="width: 120px;">Subtotal</th>
+                                <th style="width: 60px;"></th>
                             </tr>
                         </thead>
-                        <tbody id="items-body">
-                            <!-- Items will be added here -->
-                        </tbody>
+                        <tbody id="items-body"></tbody>
                     </table>
                 </div>
                 <button class="btn btn-primary" onclick="agregarItem()">
@@ -782,39 +352,36 @@
                 </button>
             </div>
 
-            <!-- Totals -->
             <div class="totals-section">
                 <div class="total-row">
-                    <span class="total-label">Subtotal:</span>
-                    <span class="total-value" id="subtotal">$0.00</span>
+                    <span>Subtotal:</span>
+                    <span id="subtotal">$0.00</span>
                 </div>
                 <div class="total-row">
-                    <span class="total-label">IVA (16%):</span>
-                    <span class="total-value" id="iva">$0.00</span>
+                    <span>IVA (16%):</span>
+                    <span id="iva">$0.00</span>
                 </div>
                 <div class="total-row">
-                    <span class="total-label">TOTAL:</span>
-                    <span class="total-value" id="total">$0.00</span>
+                    <span>TOTAL:</span>
+                    <span id="total">$0.00</span>
                 </div>
             </div>
 
-            <!-- Validity -->
             <div class="validity-section">
-                <h3><i class="ti ti-clock"></i> Validez de la Oferta</h3>
+                <h3><i class="ti ti-clock"></i> Validez de la oferta</h3>
                 <div class="validity-inputs">
                     <label>Válida por:</label>
                     <input type="number" id="validez-dias" value="7" min="1" max="30">
                     <span>días</span>
+                    <input type="number" id="validez-horas" value="0" min="0" max="23">
+                    <span>horas</span>
                 </div>
-                <p class="note">
-                    <i class="ti ti-alert-triangle"></i> 
-                    <strong>Nota importante:</strong> Los precios reflejados tienen validez únicamente durante el período indicado. 
-                    Pasado este tiempo, los montos están sujetos a cambio sin previo aviso.
+                <p style="margin-top: 10px; font-size: 13px; color: #92400e; font-style: italic;">
+                    <strong>Nota importante:</strong> Los precios reflejados tienen validez únicamente durante el período indicado.
                 </p>
             </div>
         </div>
 
-        <!-- Footer -->
         <footer class="footer">
             <div class="footer-actions">
                 <button class="btn btn-success" onclick="generarPDF()">
@@ -830,14 +397,13 @@
                     <i class="ti ti-mail"></i> Enviar por Correo
                 </button>
             </div>
-            <div class="footer-info">
-                <p><strong>PLF Soluciones de Gas</strong> - RIF: J-50242520-0</p>
-                <p>El Tigre, Estado Anzoátegui · Tel: 0414-8094038</p>
-            </div>
+            <p style="color: #6b7280; font-size: 13px;">
+                <strong>PLF Soluciones de Gas</strong> - RIF: J-50242520-0<br>
+                El Tigre, Estado Anzoátegui · Tel: 0414-8094038
+            </p>
         </footer>
     </div>
 
-    <!-- History Modal -->
     <div class="modal" id="history-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -845,32 +411,29 @@
                 <button class="modal-close" onclick="cerrarHistorial()">&times;</button>
             </div>
             <div class="modal-body">
-                <ul class="history-list" id="history-list">
-                    <!-- History items will be loaded here -->
-                </ul>
-                <button class="btn btn-secondary" onclick="cerrarHistorial()" style="width: 100%; margin-top: 15px;">
+                <ul class="history-list" id="history-list"></ul>
+                <button class="btn btn-primary" onclick="cerrarHistorial()" style="width: 100%; margin-top: 15px;">
                     Cerrar
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- WhatsApp Modal -->
     <div class="modal" id="whatsapp-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2><i class="ti ti-brand-whatsapp"></i> Enviar Cotización por WhatsApp</h2>
+                <h2><i class="ti ti-brand-whatsapp"></i> Enviar por WhatsApp</h2>
                 <button class="modal-close" onclick="cerrarWhatsApp()">&times;</button>
             </div>
             <div class="modal-body">
-                <p style="margin-bottom: 15px;">El mensaje con el resumen y los montos está listo para enviarse.</p>
+                <p style="margin-bottom: 15px;">El mensaje está listo para enviarse a <strong id="whatsapp-cliente"></strong></p>
                 <ol style="margin-left: 20px; margin-bottom: 20px;">
                     <li>Haz clic en "Abrir WhatsApp"</li>
-                    <li>Se abrirá la aplicación con el texto redactado</li>
-                    <li>Selecciona el chat del cliente y presiona Enviar</li>
+                    <li>Se abrirá la aplicación con el texto</li>
+                    <li>Selecciona el chat y presiona Enviar</li>
                 </ol>
                 <div style="display: flex; gap: 10px;">
-                    <button class="btn btn-secondary" onclick="cerrarWhatsApp()" style="flex: 1;">
+                    <button class="btn" onclick="cerrarWhatsApp()" style="flex: 1; background: #6b7280; color: white;">
                         Cancelar
                     </button>
                     <button class="btn btn-success" onclick="abrirWhatsApp()" style="flex: 1;">
@@ -881,114 +444,71 @@
         </div>
     </div>
 
-    <!-- Notification -->
-    <div class="notification" id="notification">
-        <i class="ti ti-check"></i>
-        <span id="notification-text"></span>
-    </div>
+    <div class="notification" id="notification"></div>
 
-    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
     
     <script>
-        // Global variables
         let itemCounter = 0;
-        let currentCotizacionNumber = null;
+        let currentNumero = null;
         const STORAGE_KEY = 'plf_cotizaciones';
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            updateDate();
-            checkConnection();
-            loadCotizacionNumber();
-            agregarItem(); // Add first item by default
+            updateFecha();
+            loadNumero();
+            agregarItem();
             
-            // Register service worker
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('SW registered'))
-                    .catch(err => console.log('SW error:', err));
+                navigator.serviceWorker.register('sw.js');
             }
-
-            // Update date every minute
-            setInterval(updateDate, 60000);
         });
 
-        // Update current date
-        function updateDate() {
+        function updateFecha() {
             const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('current-date').textContent = now.toLocaleDateString('es-VE', options);
+            document.getElementById('fecha-actual').textContent = now.toLocaleDateString('es-VE');
         }
 
-        // Check connection status
-        function checkConnection() {
-            const statusBadge = document.getElementById('connection-status');
-            const statusText = document.getElementById('status-text');
-            
-            if (navigator.onLine) {
-                statusBadge.className = 'status-badge online';
-                statusText.textContent = 'En línea';
-            } else {
-                statusBadge.className = 'status-badge offline';
-                statusText.textContent = 'Sin conexión';
-            }
+        function loadNumero() {
+            const saved = localStorage.getItem('plf_last_numero');
+            currentNumero = saved ? parseInt(saved) + 1 : 1;
+            document.getElementById('cotizacion-numero').textContent = String(currentNumero).padStart(5, '0');
         }
 
-        window.addEventListener('online', checkConnection);
-        window.addEventListener('offline', checkConnection);
-
-        // Load cotizacion number
-        function loadCotizacionNumber() {
-            const saved = localStorage.getItem('plf_last_cotizacion');
-            const nextNum = saved ? parseInt(saved) + 1 : 1;
-            currentCotizacionNumber = nextNum;
-            document.getElementById('cotizacion-numero').textContent = String(nextNum).padStart(5, '0');
-        }
-
-        // Add new item row
         function agregarItem() {
             itemCounter++;
             const tbody = document.getElementById('items-body');
             const row = document.createElement('tr');
-            row.className = 'item-row';
             row.dataset.id = itemCounter;
             
             row.innerHTML = `
-                <td class="col-num">${itemCounter}</td>
-                <td class="col-desc">
-                    <textarea class="item-input descripcion" 
-                              placeholder="Descripción detallada del producto o servicio..."
-                              rows="2"
-                              oninput="ajustarAlturaTextarea(this)"></textarea>
+                <td style="text-align: center;">${itemCounter}</td>
+                <td>
+                    <textarea class="item-input" placeholder="Descripción detallada..." 
+                              oninput="ajustarTextarea(this)"></textarea>
                 </td>
-                <td class="col-unit">
-                    <select class="item-input unidad">
-                        <option value="Unidad">Unidad</option>
-                        <option value="Kg">Kg</option>
-                        <option value="Lb">Lb</option>
-                        <option value="Mt">Mt</option>
-                        <option value="Gl">Gl</option>
-                        <option value="Hr">Hr</option>
-                        <option value="Servicio">Servicio</option>
+                <td>
+                    <select class="item-input">
+                        <option>Unidad</option>
+                        <option>Kg</option>
+                        <option>Lb</option>
+                        <option>Mt</option>
+                        <option>Gl</option>
+                        <option>Hr</option>
+                        <option>Servicio</option>
                     </select>
                 </td>
-                <td class="col-qty">
-                    <input type="number" class="item-input cantidad" 
-                           placeholder="0" min="1" value="1"
+                <td>
+                    <input type="number" class="item-input cantidad" placeholder="0" min="1" value="1" 
                            onchange="calcularTotales()">
                 </td>
-                <td class="col-price">
-                    <input type="number" class="item-input precio" 
-                           placeholder="0.00" min="0" step="0.01"
+                <td>
+                    <input type="number" class="item-input precio" placeholder="0.00" min="0" step="0.01" 
                            onchange="calcularTotales()">
                 </td>
-                <td class="col-subtotal">
-                    <span class="subtotal">$0.00</span>
-                </td>
-                <td class="col-action">
-                    <button class="btn-icon btn-icon-danger" onclick="eliminarItem(${itemCounter})" title="Eliminar">
+                <td><span class="subtotal">$0.00</span></td>
+                <td style="text-align: center;">
+                    <button class="btn-icon" onclick="eliminarItem(${itemCounter})">
                         <i class="ti ti-trash"></i>
                     </button>
                 </td>
@@ -998,43 +518,36 @@
             calcularTotales();
         }
 
-        // Auto-adjust textarea height
-        function ajustarAlturaTextarea(textarea) {
-            textarea.style.height = 'auto';
-            textarea.style.height = Math.max(textarea.scrollHeight, 60) + 'px';
+        function ajustarTextarea(el) {
+            el.style.height = 'auto';
+            el.style.height = Math.max(el.scrollHeight, 60) + 'px';
         }
 
-        // Delete item
         function eliminarItem(id) {
-            const row = document.querySelector(`tr[data-id="${id}"]`);
-            if (row && document.querySelectorAll('.item-row').length > 1) {
-                row.remove();
-                renumerarItems();
+            const rows = document.querySelectorAll('#items-body tr');
+            if (rows.length > 1) {
+                document.querySelector(`tr[data-id="${id}"]`).remove();
+                renumerar();
                 calcularTotales();
             } else {
                 mostrarNotificacion('Debe haber al menos un ítem', 'error');
             }
         }
 
-        // Renumber items
-        function renumerarItems() {
-            const rows = document.querySelectorAll('.item-row');
-            rows.forEach((row, index) => {
-                row.querySelector('.col-num').textContent = index + 1;
+        function renumerar() {
+            document.querySelectorAll('#items-body tr').forEach((row, i) => {
+                row.querySelector('td:first-child').textContent = i + 1;
             });
         }
 
-        // Calculate totals
         function calcularTotales() {
             let subtotal = 0;
-            
-            document.querySelectorAll('.item-row').forEach(row => {
-                const cantidad = parseFloat(row.querySelector('.cantidad').value) || 0;
+            document.querySelectorAll('#items-body tr').forEach(row => {
+                const cant = parseFloat(row.querySelector('.cantidad').value) || 0;
                 const precio = parseFloat(row.querySelector('.precio').value) || 0;
-                const itemSubtotal = cantidad * precio;
-                
-                row.querySelector('.subtotal').textContent = '$' + itemSubtotal.toFixed(2);
-                subtotal += itemSubtotal;
+                const total = cant * precio;
+                row.querySelector('.subtotal').textContent = '$' + total.toFixed(2);
+                subtotal += total;
             });
             
             const iva = subtotal * 0.16;
@@ -1045,33 +558,49 @@
             document.getElementById('total').textContent = '$' + total.toFixed(2);
         }
 
-        // New cotizacion
+        function validarForm() {
+            if (!document.getElementById('cliente-nombre').value.trim()) {
+                mostrarNotificacion('Ingrese el nombre del cliente', 'error');
+                return false;
+            }
+            if (!document.getElementById('cliente-telefono').value.trim()) {
+                mostrarNotificacion('Ingrese el teléfono', 'error');
+                return false;
+            }
+            
+            let valid = true;
+            document.querySelectorAll('#items-body tr').forEach(row => {
+                const desc = row.querySelector('textarea').value.trim();
+                const cant = row.querySelector('.cantidad').value;
+                const precio = row.querySelector('.precio').value;
+                if (!desc || !cant || !precio) valid = false;
+            });
+            
+            if (!valid) {
+                mostrarNotificacion('Complete todos los ítems', 'error');
+            }
+            return valid;
+        }
+
         function nuevaCotizacion() {
-            if (confirm('¿Crear nueva cotización? Se perderán los datos no guardados.')) {
+            if (confirm('¿Crear nueva cotización?')) {
                 document.getElementById('cliente-nombre').value = '';
                 document.getElementById('cliente-telefono').value = '';
                 document.getElementById('cliente-email').value = '';
                 document.getElementById('cliente-direccion').value = '';
-                document.getElementById('validez-dias').value = '7';
-                
                 document.getElementById('items-body').innerHTML = '';
                 itemCounter = 0;
                 agregarItem();
-                
-                loadCotizacionNumber();
+                loadNumero();
                 mostrarNotificacion('Nueva cotización creada');
             }
         }
 
-        // Save cotizacion
         function guardarCotizacion() {
-            if (!validarFormulario()) {
-                mostrarNotificacion('Complete los campos obligatorios', 'error');
-                return;
-            }
+            if (!validarForm()) return;
             
             const cotizacion = {
-                numero: currentCotizacionNumber,
+                numero: currentNumero,
                 fecha: new Date().toISOString(),
                 cliente: {
                     nombre: document.getElementById('cliente-nombre').value,
@@ -1083,171 +612,139 @@
                 subtotal: document.getElementById('subtotal').textContent,
                 iva: document.getElementById('iva').textContent,
                 total: document.getElementById('total').textContent,
-                validez: document.getElementById('validez-dias').value
+                validez: {
+                    dias: document.getElementById('validez-dias').value,
+                    horas: document.getElementById('validez-horas').value
+                }
             };
             
-            document.querySelectorAll('.item-row').forEach(row => {
+            document.querySelectorAll('#items-body tr').forEach(row => {
                 cotizacion.items.push({
-                    descripcion: row.querySelector('.descripcion').value,
-                    unidad: row.querySelector('.unidad').value,
+                    descripcion: row.querySelector('textarea').value,
+                    unidad: row.querySelector('select').value,
                     cantidad: row.querySelector('.cantidad').value,
                     precio: row.querySelector('.precio').value,
                     subtotal: row.querySelector('.subtotal').textContent
                 });
             });
             
-            // Save to localStorage
             const cotizaciones = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
             cotizaciones.push(cotizacion);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(cotizaciones));
-            localStorage.setItem('plf_last_cotizacion', currentCotizacionNumber);
+            localStorage.setItem('plf_last_numero', currentNumero);
             
-            mostrarNotificacion('Cotización guardada exitosamente');
+            mostrarNotificacion('Cotización guardada');
         }
 
-        // Validate form
-        function validarFormulario() {
-            const nombre = document.getElementById('cliente-nombre').value.trim();
-            const telefono = document.getElementById('cliente-telefono').value.trim();
+        async function generarPDF() {
+            if (!validarForm()) return;
             
-            if (!nombre || !telefono) return false;
-            
-            const items = document.querySelectorAll('.item-row');
-            for (let item of items) {
-                const desc = item.querySelector('.descripcion').value.trim();
-                const cantidad = item.querySelector('.cantidad').value;
-                const precio = item.querySelector('.precio').value;
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
                 
-                if (!desc || !cantidad || !precio) return false;
-            }
-            
-            return true;
-        }
-
-        // Generate PDF
-        function generarPDF() {
-            if (!validarFormulario()) {
-                mostrarNotificacion('Complete los campos obligatorios', 'error');
-                return;
-            }
-            
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            // Logo
-            const logoImg = document.getElementById('logo-img');
-            if (logoImg) {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = 200;
-                canvas.height = 100;
-                ctx.drawImage(logoImg, 0, 0, canvas.width, canvas.height);
-                const logoData = canvas.toDataURL('image/png');
-                doc.addImage(logoData, 'PNG', 10, 10, 50, 25);
-            }
-            
-            // Company info
-            doc.setFontSize(16);
-            doc.setTextColor(30, 58, 138);
-            doc.text('PLF SOLUCIONES DE GAS', 200, 20, { align: 'right' });
-            doc.setFontSize(9);
-            doc.setTextColor(100);
-            doc.text('RIF: J-50242520-0', 200, 26, { align: 'right' });
-            doc.text('El Tigre, Edo. Anzoátegui', 200, 31, { align: 'right' });
-            doc.text('Teléfono: 0414-8094038', 200, 36, { align: 'right' });
-            
-            // Title
-            doc.setFontSize(20);
-            doc.setTextColor(30, 58, 138);
-            doc.text('COTIZACIÓN', 105, 50, { align: 'center' });
-            doc.setFontSize(12);
-            doc.text(`Nº ${String(currentCotizacionNumber).padStart(5, '0')}`, 105, 58, { align: 'center' });
-            
-            // Date
-            const fecha = new Date().toLocaleDateString('es-VE');
-            doc.text(`Fecha: ${fecha}`, 200, 65, { align: 'right' });
-            
-            // Client info
-            doc.setFontSize(11);
-            doc.setTextColor(30, 58, 138);
-            doc.text('DATOS DEL CLIENTE:', 10, 75);
-            doc.setFontSize(10);
-            doc.setTextColor(0);
-            doc.text(`Nombre: ${document.getElementById('cliente-nombre').value}`, 10, 83);
-            doc.text(`Teléfono: ${document.getElementById('cliente-telefono').value}`, 10, 90);
-            const email = document.getElementById('cliente-email').value;
-            if (email) doc.text(`Email: ${email}`, 10, 97);
-            
-            // Items table
-            const items = [];
-            document.querySelectorAll('.item-row').forEach(row => {
-                items.push([
-                    row.querySelector('.descripcion').value,
-                    row.querySelector('.unidad').value,
-                    row.querySelector('.cantidad').value,
-                    '$' + parseFloat(row.querySelector('.precio').value).toFixed(2),
-                    row.querySelector('.subtotal').textContent
-                ]);
-            });
-            
-            doc.autoTable({
-                startY: 105,
-                head: [['Descripción', 'Unidad', 'Cant.', 'Precio', 'Subtotal']],
-                body: items,
-                theme: 'grid',
-                styles: {
-                    fontSize: 9,
-                    cellPadding: 3,
-                    overflow: 'linebreak',
-                    cellWidth: 'auto'
-                },
-                headStyles: {
-                    fillColor: [30, 58, 138],
-                    textColor: 255,
-                    fontStyle: 'bold'
-                },
-                columnStyles: {
-                    0: { cellWidth: 90 },
-                    1: { cellWidth: 25, halign: 'center' },
-                    2: { cellWidth: 20, halign: 'center' },
-                    3: { cellWidth: 30, halign: 'right' },
-                    4: { cellWidth: 30, halign: 'right' }
+                // Logo desde GitHub
+                const logoUrl = 'https://raw.githubusercontent.com/Kervysj/PEDRO-APP/main/11111.jpg';
+                try {
+                    const logoResponse = await fetch(logoUrl);
+                    const logoBlob = await logoResponse.blob();
+                    const reader = new FileReader();
+                    reader.readAsDataURL(logoBlob);
+                    const logoData = await new Promise(resolve => {
+                        reader.onloadend = () => resolve(reader.result);
+                    });
+                    doc.addImage(logoData, 'JPEG', 10, 10, 50, 25);
+                } catch (e) {
+                    console.log('Logo no cargado:', e);
                 }
-            });
-            
-            // Totals
-            const finalY = doc.lastAutoTable.finalY + 10;
-            doc.setFontSize(11);
-            doc.setTextColor(30, 58, 138);
-            doc.text(`Subtotal: ${document.getElementById('subtotal').textContent}`, 200, finalY, { align: 'right' });
-            doc.text(`IVA (16%): ${document.getElementById('iva').textContent}`, 200, finalY + 7, { align: 'right' });
-            doc.setFontSize(14);
-            doc.text(`TOTAL: ${document.getElementById('total').textContent}`, 200, finalY + 16, { align: 'right' });
-            
-            // Validity
-            const validez = document.getElementById('validez-dias').value;
-            doc.setFontSize(9);
-            doc.setTextColor(100);
-            doc.text(`Validez de la oferta: ${validez} días`, 10, finalY + 30);
-            doc.text('Los precios están sujetos a cambio después del período de validez.', 10, finalY + 36);
-            
-            // Footer
-            doc.setFontSize(8);
-            doc.text('PLF Soluciones de Gas - RIF: J-50242520-0', 105, 280, { align: 'center' });
-            
-            // Save
-            const nombreCliente = document.getElementById('cliente-nombre').value.replace(/[^a-z0-9]/gi, '_');
-            doc.save(`Cotizacion_${String(currentCotizacionNumber).padStart(5, '0')}_${nombreCliente}.pdf`);
-            
-            mostrarNotificacion('PDF generado exitosamente');
+                
+                // Empresa
+                doc.setFontSize(16);
+                doc.setTextColor(30, 58, 138);
+                doc.text('PLF SOLUCIONES DE GAS', 200, 20, { align: 'right' });
+                doc.setFontSize(9);
+                doc.setTextColor(100);
+                doc.text('RIF: J-50242520-0', 200, 26, { align: 'right' });
+                doc.text('El Tigre, Edo. Anzoátegui', 200, 31, { align: 'right' });
+                doc.text('Tel: 0414-8094038', 200, 36, { align: 'right' });
+                
+                // Título
+                doc.setFontSize(20);
+                doc.setTextColor(30, 58, 138);
+                doc.text('COTIZACIÓN', 105, 50, { align: 'center' });
+                doc.setFontSize(12);
+                doc.text('Nº ' + String(currentNumero).padStart(5, '0'), 105, 58, { align: 'center' });
+                
+                // Fecha
+                doc.text('Fecha: ' + new Date().toLocaleDateString('es-VE'), 200, 65, { align: 'right' });
+                
+                // Cliente
+                doc.setFontSize(11);
+                doc.setTextColor(30, 58, 138);
+                doc.text('CLIENTE:', 10, 75);
+                doc.setFontSize(10);
+                doc.setTextColor(0);
+                doc.text(document.getElementById('cliente-nombre').value, 10, 82);
+                doc.text('Tel: ' + document.getElementById('cliente-telefono').value, 10, 89);
+                
+                // Tabla
+                const items = [];
+                document.querySelectorAll('#items-body tr').forEach(row => {
+                    items.push([
+                        row.querySelector('textarea').value,
+                        row.querySelector('select').value,
+                        row.querySelector('.cantidad').value,
+                        '$' + parseFloat(row.querySelector('.precio').value).toFixed(2),
+                        row.querySelector('.subtotal').textContent
+                    ]);
+                });
+                
+                doc.autoTable({
+                    startY: 95,
+                    head: [['Descripción', 'Unidad', 'Cant.', 'Precio', 'Subtotal']],
+                    body: items,
+                    theme: 'grid',
+                    styles: { fontSize: 9, cellPadding: 3, overflow: 'linebreak' },
+                    headStyles: { fillColor: [30, 58, 138], textColor: 255 },
+                    columnStyles: {
+                        0: { cellWidth: 80 },
+                        1: { cellWidth: 25, halign: 'center' },
+                        2: { cellWidth: 20, halign: 'center' },
+                        3: { cellWidth: 30, halign: 'right' },
+                        4: { cellWidth: 30, halign: 'right' }
+                    }
+                });
+                
+                // Totales
+                const y = doc.lastAutoTable.finalY + 10;
+                doc.setFontSize(11);
+                doc.setTextColor(30, 58, 138);
+                doc.text('Subtotal: ' + document.getElementById('subtotal').textContent, 200, y, { align: 'right' });
+                doc.text('IVA: ' + document.getElementById('iva').textContent, 200, y + 7, { align: 'right' });
+                doc.setFontSize(14);
+                doc.text('TOTAL: ' + document.getElementById('total').textContent, 200, y + 16, { align: 'right' });
+                
+                // Validez
+                const dias = document.getElementById('validez-dias').value;
+                const horas = document.getElementById('validez-horas').value;
+                doc.setFontSize(9);
+                doc.setTextColor(100);
+                doc.text(`Validez: ${dias} días y ${horas} horas`, 10, y + 30);
+                
+                // Guardar
+                const nombre = document.getElementById('cliente-nombre').value.replace(/[^a-z0-9]/gi, '_');
+                doc.save(`Cotizacion_${String(currentNumero).padStart(5, '0')}_${nombre}.pdf`);
+                
+                mostrarNotificacion('PDF generado');
+            } catch (e) {
+                console.error(e);
+                mostrarNotificacion('Error al generar PDF: ' + e.message, 'error');
+            }
         }
 
-        // Send WhatsApp
         function enviarWhatsApp() {
-            if (!validarFormulario()) {
-                mostrarNotificacion('Complete los campos obligatorios', 'error');
-                return;
-            }
+            if (!validarForm()) return;
+            document.getElementById('whatsapp-cliente').textContent = document.getElementById('cliente-nombre').value;
             document.getElementById('whatsapp-modal').classList.add('active');
         }
 
@@ -1258,79 +755,52 @@
         function abrirWhatsApp() {
             const cliente = document.getElementById('cliente-nombre').value;
             const total = document.getElementById('total').textContent;
-            const validez = document.getElementById('validez-dias').value;
+            const telefono = document.getElementById('cliente-telefono').value.replace(/[^0-9]/g, '');
             
-            let mensaje = `*PLF SOLUCIONES DE GAS*%0A`;
-            mensaje += `COTIZACIÓN Nº ${String(currentCotizacionNumber).padStart(5, '0')}%0A`;
-            mensaje += `---------------------------%0A%0A`;
-            mensaje += `*Cliente:* ${cliente}%0A`;
-            mensaje += `*Fecha:* ${new Date().toLocaleDateString('es-VE')}%0A%0A`;
-            mensaje += `*Ítems:*%0A`;
+            let msg = `*PLF SOLUCIONES DE GAS*%0A`;
+            msg += `COTIZACIÓN Nº ${String(currentNumero).padStart(5, '0')}%0A`;
+            msg += `Cliente: ${cliente}%0A`;
+            msg += `Total: ${total}%0A%0A`;
             
-            document.querySelectorAll('.item-row').forEach((row, i) => {
-                const desc = row.querySelector('.descripcion').value;
-                const cant = row.querySelector('.cantidad').value;
-                const precio = row.querySelector('.precio').value;
-                const subtotal = row.querySelector('.subtotal').textContent;
-                mensaje += `${i+1}. ${desc}%0A`;
-                mensaje += `   Cant: ${cant} x $${parseFloat(precio).toFixed(2)} = ${subtotal}%0A`;
+            document.querySelectorAll('#items-body tr').forEach((row, i) => {
+                msg += `${i+1}. ${row.querySelector('textarea').value}%0A`;
             });
             
-            mensaje += `%0A*Subtotal:* ${document.getElementById('subtotal').textContent}%0A`;
-            mensaje += `*IVA (16%):* ${document.getElementById('iva').textContent}%0A`;
-            mensaje += `*TOTAL:* ${total}%0A%0A`;
-            mensaje += `*Validez:* ${validez} días%0A%0A`;
-            mensaje += `Gracias por su preferencia.`;
-            
-            const telefono = document.getElementById('cliente-telefono').value.replace(/[^0-9]/g, '');
-            const url = `https://wa.me/58${telefono}?text=${mensaje}`;
-            
-            window.open(url, '_blank');
+            window.open(`https://wa.me/58${telefono}?text=${msg}`, '_blank');
             cerrarWhatsApp();
-            mostrarNotificacion('Abriendo WhatsApp...');
         }
 
-        // Send email
         function enviarCorreo() {
             const email = document.getElementById('cliente-email').value;
             if (!email) {
-                mostrarNotificacion('Ingrese el correo del cliente', 'error');
+                mostrarNotificacion('Ingrese el correo', 'error');
                 return;
             }
-            
-            const asunto = `Cotización Nº ${String(currentCotizacionNumber).padStart(5, '0')} - PLF Soluciones de Gas`;
-            const cuerpo = `Estimado cliente,%0D%0A%0D%0AAdjuntamos su cotización.%0D%0A%0D%0ATotal: ${document.getElementById('total').textContent}%0D%0A%0D%0ASaludos.`;
-            
+            const asunto = `Cotización Nº ${String(currentNumero).padStart(5, '0')}`;
+            const cuerpo = `Total: ${document.getElementById('total').textContent}`;
             window.location.href = `mailto:${email}?subject=${asunto}&body=${cuerpo}`;
         }
 
-        // Show history
         function mostrarHistorial() {
             const cotizaciones = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
             const list = document.getElementById('history-list');
             list.innerHTML = '';
             
             if (cotizaciones.length === 0) {
-                list.innerHTML = '<li style="text-align: center; padding: 20px; color: var(--gray);">No hay cotizaciones guardadas</li>';
+                list.innerHTML = '<li style="padding: 20px; text-align: center; color: #6b7280;">Sin cotizaciones</li>';
             } else {
                 cotizaciones.reverse().forEach(cot => {
-                    const fecha = new Date(cot.fecha).toLocaleString('es-VE');
                     const li = document.createElement('li');
                     li.className = 'history-item';
                     li.innerHTML = `
-                        <div class="history-info">
-                            <h4>Cotización Nº ${String(cot.numero).padStart(5, '0')}</h4>
-                            <p>${cot.cliente.nombre} · ${fecha}</p>
-                            <p><strong>Total: ${cot.total}</strong></p>
+                        <div>
+                            <strong>Cotización Nº ${String(cot.numero).padStart(5, '0')}</strong><br>
+                            <small>${cot.cliente.nombre} - ${new Date(cot.fecha).toLocaleDateString('es-VE')}</small><br>
+                            <strong>${cot.total}</strong>
                         </div>
-                        <div class="history-actions">
-                            <button class="btn btn-primary btn-sm" onclick="cargarCotizacion(${cot.numero})">
-                                <i class="ti ti-load"></i> Cargar
-                            </button>
-                            <button class="btn btn-danger btn-sm" onclick="eliminarCotizacion(${cot.numero})">
-                                <i class="ti ti-trash"></i>
-                            </button>
-                        </div>
+                        <button class="btn btn-primary" onclick="cargarCotizacion(${cot.numero})">
+                            <i class="ti ti-load"></i>
+                        </button>
                     `;
                     list.appendChild(li);
                 });
@@ -1352,7 +822,8 @@
             document.getElementById('cliente-telefono').value = cot.cliente.telefono;
             document.getElementById('cliente-email').value = cot.cliente.email || '';
             document.getElementById('cliente-direccion').value = cot.cliente.direccion || '';
-            document.getElementById('validez-dias').value = cot.validez;
+            document.getElementById('validez-dias').value = cot.validez.dias;
+            document.getElementById('validez-horas').value = cot.validez.horas;
             
             document.getElementById('items-body').innerHTML = '';
             itemCounter = 0;
@@ -1360,8 +831,8 @@
             cot.items.forEach(item => {
                 agregarItem();
                 const row = document.querySelector(`tr[data-id="${itemCounter}"]`);
-                row.querySelector('.descripcion').value = item.descripcion;
-                row.querySelector('.unidad').value = item.unidad;
+                row.querySelector('textarea').value = item.descripcion;
+                row.querySelector('select').value = item.unidad;
                 row.querySelector('.cantidad').value = item.cantidad;
                 row.querySelector('.precio').value = item.precio;
                 row.querySelector('.subtotal').textContent = item.subtotal;
@@ -1372,28 +843,11 @@
             mostrarNotificacion('Cotización cargada');
         }
 
-        function eliminarCotizacion(numero) {
-            if (!confirm('¿Eliminar esta cotización?')) return;
-            
-            let cotizaciones = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-            cotizaciones = cotizaciones.filter(c => c.numero !== numero);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(cotizaciones));
-            
-            mostrarHistorial();
-            mostrarNotificacion('Cotización eliminada');
-        }
-
-        // Notification
-        function mostrarNotificacion(mensaje, tipo = 'success') {
+        function mostrarNotificacion(msg, tipo = 'success') {
             const notif = document.getElementById('notification');
-            const text = document.getElementById('notification-text');
-            
-            text.textContent = mensaje;
+            notif.textContent = msg;
             notif.className = 'notification show ' + (tipo === 'error' ? 'error' : '');
-            
-            setTimeout(() => {
-                notif.classList.remove('show');
-            }, 3000);
+            setTimeout(() => notif.classList.remove('show'), 3000);
         }
     </script>
 </body>
