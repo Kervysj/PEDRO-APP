@@ -372,6 +372,7 @@
                 <p>RIF: V-18228860-4</p>
                 <p>Calle Páez, Casa Nro. 55-66, Sector José Félix Ribas</p>
                 <p>San José de Guanipa (El Tigrito), Anzoátegui — CP 6054</p>
+                <p>📞 +58 426-6373359</p>
             </div>
         </header>
 
@@ -516,7 +517,8 @@
                 <strong>PLF SOLUCIONES DE GAS</strong><br>
                 RIF: V-18228860-4<br>
                 Calle Páez, Casa Nro. 55-66, Sector José Félix Ribas<br>
-                San José de Guanipa (El Tigrito), Anzoátegui — CP 6054
+                San José de Guanipa (El Tigrito), Anzoátegui — CP 6054<br>
+                 +58 426-6373359
             </p>
         </footer>
     </div>
@@ -819,11 +821,10 @@
                 const contentWidth = pageWidth - (margin * 2);
                 
                 // Colores corporativos
-                const colorPrimary = [30, 58, 138];      // Azul oscuro
-                const colorSecondary = [249, 115, 22];   // Naranja
-                const colorLight = [243, 244, 246];      // Gris claro
-                const colorText = [31, 41, 55];          // Texto oscuro
-                const colorGray = [107, 114, 128];       // Gris medio
+                const colorPrimary = [30, 58, 138];
+                const colorSecondary = [249, 115, 22];
+                const colorText = [31, 41, 55];
+                const colorGray = [107, 114, 128];
                 
                 // ============ HEADER ============
                 let currentY = margin;
@@ -853,9 +854,10 @@
                 doc.setTextColor(...colorGray);
                 doc.setFont(undefined, 'normal');
                 doc.text('Especialistas en Instalaciones y Sistemas de Gas', pageWidth - margin, currentY + 10, { align: 'right' });
-                doc.text('El Tigre, Estado Anzoátegui', pageWidth - margin, currentY + 14, { align: 'right' });
+                doc.text('El Tigre, Estado Anzoategui', pageWidth - margin, currentY + 14, { align: 'right' });
+                doc.text('Tel: +58 426-6373359', pageWidth - margin, currentY + 18, { align: 'right' });
                 
-                currentY += 22;
+                currentY += 24;
                 
                 // Línea separadora
                 doc.setDrawColor(...colorPrimary);
@@ -864,7 +866,6 @@
                 currentY += 8;
                 
                 // ============ TÍTULO PRESUPUESTO ============
-                // Fondo azul oscuro
                 doc.setFillColor(...colorPrimary);
                 doc.rect(margin, currentY, contentWidth, 12, 'F');
                 
@@ -873,9 +874,8 @@
                 doc.setFont(undefined, 'bold');
                 doc.text('PRESUPUESTO', margin + 5, currentY + 8);
                 
-                // Número y fecha (derecha)
                 doc.setFontSize(9);
-                doc.text('N° Cotización: PSG-' + new Date().getFullYear() + '-' + String(currentNumero).padStart(4, '0'), pageWidth - margin - 5, currentY + 5, { align: 'right' });
+                doc.text('N° Cotizacion: PSG-' + new Date().getFullYear() + '-' + String(currentNumero).padStart(4, '0'), pageWidth - margin - 5, currentY + 5, { align: 'right' });
                 doc.text('Fecha: ' + new Date().toLocaleDateString('es-VE'), pageWidth - margin - 5, currentY + 9, { align: 'right' });
                 
                 currentY += 18;
@@ -887,7 +887,6 @@
                 doc.setLineWidth(0.3);
                 doc.rect(margin, currentY, contentWidth, 22, 'S');
                 
-                // Borde izquierdo naranja
                 doc.setDrawColor(...colorSecondary);
                 doc.setLineWidth(1);
                 doc.line(margin, currentY, margin, currentY + 22);
@@ -905,7 +904,7 @@
                 doc.setTextColor(...colorGray);
                 const rif = document.getElementById('cliente-rif').value || 'N/A';
                 const tel = document.getElementById('cliente-telefono').value;
-                doc.text('RIF: ' + rif + '  |  Teléfono: ' + tel, margin + 5, currentY + 19);
+                doc.text('RIF: ' + rif + '  |  Telefono: ' + tel, margin + 5, currentY + 19);
                 
                 currentY += 28;
                 
@@ -915,7 +914,7 @@
                     items.push([
                         (i + 1).toString(),
                         row.querySelector('textarea').value,
-                        row.querySelector('.select').value || row.querySelector('select').value,
+                        row.querySelector('select').value,
                         row.querySelector('.cantidad').value,
                         '$ ' + parseFloat(row.querySelector('.precio').value).toFixed(2).replace('.', ','),
                         row.querySelector('.subtotal').textContent.replace('$', '$ ').replace('.', ',')
@@ -924,7 +923,7 @@
                 
                 doc.autoTable({
                     startY: currentY,
-                    head: [['ITEM', 'DESCRIPCIÓN DEL SERVICIO / TRABAJO', 'CANT.', 'MONTO USD']],
+                    head: [['ITEM', 'DESCRIPCION DEL SERVICIO / TRABAJO', 'CANT.', 'MONTO USD']],
                     body: items,
                     theme: 'grid',
                     headStyles: {
@@ -954,12 +953,6 @@
                         overflow: 'linebreak',
                         lineColor: [226, 232, 240],
                         lineWidth: 0.2
-                    },
-                    didParseCell: function(data) {
-                        // Fusionar columnas 3 y 4 en el header (CANT y MONTO)
-                        if (data.section === 'head' && data.column.index === 3) {
-                            // No hacer nada especial
-                        }
                     }
                 });
                 
@@ -973,26 +966,22 @@
                 const ivaText = document.getElementById('iva').textContent;
                 const totalText = document.getElementById('total').textContent;
                 
-                // Subtotal
                 doc.setFontSize(10);
                 doc.setTextColor(...colorText);
                 doc.text('Subtotal:', pageWidth - margin - 60, currentY, { align: 'right' });
                 doc.text(subtotalText.replace('.', ','), pageWidth - margin, currentY, { align: 'right' });
                 currentY += 7;
                 
-                // IVA (si aplica)
                 if (aplicarIVA) {
                     doc.text('IVA (' + porcentajeIVA + '%):', pageWidth - margin - 60, currentY, { align: 'right' });
                     doc.text(ivaText.replace('.', ','), pageWidth - margin, currentY, { align: 'right' });
                     currentY += 7;
                 }
                 
-                // Línea separadora
                 doc.setDrawColor(...colorPrimary);
                 doc.setLineWidth(0.5);
                 doc.line(pageWidth - margin - 65, currentY - 2, pageWidth - margin, currentY - 2);
                 
-                // TOTAL destacado
                 currentY += 3;
                 doc.setFillColor(241, 245, 249);
                 doc.rect(pageWidth - margin - 70, currentY - 5, 70, 10, 'F');
@@ -1012,7 +1001,6 @@
                 doc.setLineWidth(0.3);
                 doc.rect(margin, currentY, contentWidth, 35, 'S');
                 
-                // Borde izquierdo naranja
                 doc.setDrawColor(...colorSecondary);
                 doc.setLineWidth(1);
                 doc.line(margin, currentY, margin, currentY + 35);
@@ -1028,10 +1016,10 @@
                 
                 const dias = document.getElementById('validez-dias').value;
                 const condiciones = [
-                    '• Validez del Presupuesto: ' + dias + ' días continuos a partir de la fecha de emisión.',
-                    '• Forma de Pago: Los montos expresados en Divisas ($) pueden ser cancelados en Bolívares (VES) a la tasa oficial',
-                    '  del Banco Central de Venezuela (BCV) del día de pago.',
-                    '• Garantía: Trabajos garantizados bajo normativa técnica vigente.'
+                    '• Validez del Presupuesto: ' + dias + ' dias continuos a partir de la fecha de emision.',
+                    '• Forma de Pago: Los montos expresados en Divisas ($) pueden ser cancelados en Bolivares (VES) a la tasa oficial',
+                    '  del Banco Central de Venezuela (BCV) del dia de pago.',
+                    '• Garantia: Trabajos garantizados bajo normativa tecnica vigente.'
                 ];
                 
                 let condY = currentY + 14;
@@ -1050,7 +1038,8 @@
                 doc.setFontSize(7);
                 doc.setTextColor(...colorGray);
                 doc.text('PLF SOLUCIONES DE GAS — Compromiso, Calidad y Seguridad en Servicios de Gas', pageWidth / 2, pageHeight - 15, { align: 'center' });
-                doc.text('RIF: V-18228860-4 | Calle Páez, Casa Nro. 55-66, Sector José Félix Ribas, San José de Guanipa (El Tigrito), Anzoátegui — CP 6054', pageWidth / 2, pageHeight - 11, { align: 'center' });
+                doc.text('RIF: V-18228860-4 | Calle Paez, Casa Nro. 55-66, Sector Jose Felix Ribas, San Jose de Guanipa (El Tigrito), Anzoategui — CP 6054', pageWidth / 2, pageHeight - 11, { align: 'center' });
+                doc.text('Tel: +58 426-6373359', pageWidth / 2, pageHeight - 7, { align: 'center' });
                 
                 // ============ GUARDAR PDF ============
                 const nombre = document.getElementById('cliente-nombre').value.replace(/[^a-z0-9]/gi, '_');
@@ -1096,6 +1085,7 @@
             msg += 'RIF: V-18228860-4%0A';
             msg += 'Calle Paez, Casa Nro. 55-66, Sector Jose Felix Ribas%0A';
             msg += 'San Jose de Guanipa (El Tigrito), Anzoategui - CP 6054%0A';
+            msg += 'Tel: +58 426-6373359%0A';
             msg += '---------------------------%0A%0A';
             msg += '*PRESUPUESTO Nº PSG-' + new Date().getFullYear() + '-' + String(currentNumero).padStart(4, '0') + '*%0A%0A';
             msg += '*Cliente:* ' + cliente + '%0A';
