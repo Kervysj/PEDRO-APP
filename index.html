@@ -38,7 +38,7 @@
             border-radius: 8px;
         }
         .company-info h1 { font-size: 24px; margin-bottom: 5px; }
-        .company-info p { font-size: 13px; opacity: 0.9; }
+        .company-info p { font-size: 13px; opacity: 0.9; margin: 3px 0; }
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -369,8 +369,9 @@
             </div>
             <div class="company-info">
                 <h1>PLF SOLUCIONES DE GAS</h1>
-                <p>RIF: J-50242520-0 · El Tigre, Edo. Anzoátegui</p>
-                <p>Teléfono: 0414-8094038</p>
+                <p>RIF: V-18228860-4</p>
+                <p>Calle Páez, Casa Nro. 55-66, Sector José Félix Ribas</p>
+                <p>San José de Guanipa (El Tigrito), Anzoátegui — CP 6054</p>
             </div>
         </header>
 
@@ -511,9 +512,11 @@
                     <i class="ti ti-mail"></i> Enviar por Correo
                 </button>
             </div>
-            <p style="color: #6b7280; font-size: 13px;">
-                <strong>PLF Soluciones de Gas</strong> - RIF: J-50242520-0<br>
-                El Tigre, Estado Anzoátegui · Tel: 0414-8094038
+            <p style="color: #6b7280; font-size: 13px; line-height: 1.6;">
+                <strong>PLF SOLUCIONES DE GAS</strong><br>
+                RIF: V-18228860-4<br>
+                Calle Páez, Casa Nro. 55-66, Sector José Félix Ribas<br>
+                San José de Guanipa (El Tigrito), Anzoátegui — CP 6054
             </p>
         </footer>
     </div>
@@ -548,8 +551,9 @@
                 <div class="whatsapp-info">
                     <strong><i class="ti ti-info-circle"></i> Instrucciones:</strong>
                     <ol>
-                        <li>Haz clic en "Abrir WhatsApp" para generar el mensaje</li>
-                        <li>Se abrirá la aplicación con el texto redactado</li>
+                        <li>Haz clic en "Descargar PDF y Abrir WhatsApp" para generar el mensaje</li>
+                        <li>Se descargará automáticamente el PDF</li>
+                        <li>Se abrirá WhatsApp con el texto redactado</li>
                         <li><strong>Adjunta el PDF descargado</strong> desde tu carpeta de descargas</li>
                         <li>Selecciona el chat del cliente y presiona Enviar</li>
                     </ol>
@@ -826,14 +830,14 @@
                 doc.text('PLF SOLUCIONES DE GAS', 200, 20, { align: 'right' });
                 doc.setFontSize(9);
                 doc.setTextColor(100);
-                doc.text('RIF: J-50242520-0', 200, 26, { align: 'right' });
-                doc.text('El Tigre, Edo. Anzoátegui', 200, 31, { align: 'right' });
-                doc.text('Tel: 0414-8094038', 200, 36, { align: 'right' });
+                doc.text('RIF: V-18228860-4', 200, 26, { align: 'right' });
+                doc.text('Calle Paez, Casa Nro. 55-66, Sector Jose Felix Ribas', 200, 31, { align: 'right' });
+                doc.text('San Jose de Guanipa (El Tigrito), Anzoategui - CP 6054', 200, 36, { align: 'right' });
                 
                 // Título
                 doc.setFontSize(20);
                 doc.setTextColor(30, 58, 138);
-                doc.text('COTIZACIÓN', 105, 50, { align: 'center' });
+                doc.text('COTIZACION', 105, 50, { align: 'center' });
                 doc.setFontSize(12);
                 doc.text('Nº ' + String(currentNumero).padStart(5, '0'), 105, 58, { align: 'center' });
                 
@@ -863,7 +867,7 @@
                 
                 doc.autoTable({
                     startY: 95,
-                    head: [['Descripción', 'Unidad', 'Cant.', 'Precio', 'Subtotal']],
+                    head: [['Descripcion', 'Unidad', 'Cant.', 'Precio', 'Subtotal']],
                     body: items,
                     theme: 'grid',
                     styles: { fontSize: 9, cellPadding: 3, overflow: 'linebreak' },
@@ -898,14 +902,14 @@
                 const horas = document.getElementById('validez-horas').value;
                 doc.setFontSize(9);
                 doc.setTextColor(100);
-                doc.text('Validez: ' + dias + ' días y ' + horas + ' horas', 10, y + 30);
+                doc.text('Validez: ' + dias + ' dias y ' + horas + ' horas', 10, y + 30);
                 
                 // Nota BCV
                 doc.setFontSize(9);
                 doc.setTextColor(30, 58, 138);
                 doc.setFont(undefined, 'bold');
                 const splitNote = doc.splitTextToSize(
-                    'COTIZACIÓN AFERRADA AL DÓLAR BCV DEL DÍA - Los montos están expresados en dólares americanos (USD) y están sujetos a la tasa de cambio oficial del BCV del día del pago.',
+                    'COTIZACION AFERRADA AL DOLAR BCV DEL DIA - Los montos estan expresados en dolares americanos (USD) y estan sujetos a la tasa de cambio oficial del BCV del dia del pago.',
                     180
                 );
                 doc.text(splitNote, 10, y + 45);
@@ -914,7 +918,7 @@
                 doc.setFontSize(8);
                 doc.setTextColor(100);
                 doc.setFont(undefined, 'normal');
-                doc.text('PLF Soluciones de Gas - RIF: J-50242520-0', 105, 280, { align: 'center' });
+                doc.text('PLF Soluciones de Gas - RIF: V-18228860-4', 105, 280, { align: 'center' });
                 
                 // Guardar
                 const nombre = document.getElementById('cliente-nombre').value.replace(/[^a-z0-9]/gi, '_');
@@ -961,12 +965,14 @@
             const horas = document.getElementById('validez-horas').value;
             
             let msg = '*PLF SOLUCIONES DE GAS*%0A';
-            msg += 'RIF: J-50242520-0%0A';
+            msg += 'RIF: V-18228860-4%0A';
+            msg += 'Calle Paez, Casa Nro. 55-66, Sector Jose Felix Ribas%0A';
+            msg += 'San Jose de Guanipa (El Tigrito), Anzoategui - CP 6054%0A';
             msg += '---------------------------%0A%0A';
-            msg += '*COTIZACIÓN Nº ' + numero + '*%0A%0A';
+            msg += '*COTIZACION Nº ' + numero + '*%0A%0A';
             msg += '*Cliente:* ' + cliente + '%0A';
             msg += '*Fecha:* ' + new Date().toLocaleDateString('es-VE') + '%0A%0A';
-            msg += '*Ítems:*%0A';
+            msg += '*Items:*%0A';
             
             document.querySelectorAll('#items-body tr').forEach((row, i) => {
                 msg += (i+1) + '. ' + row.querySelector('textarea').value + '%0A';
@@ -983,9 +989,9 @@
             }
             
             msg += '*TOTAL:* ' + total + '%0A%0A';
-            msg += '*Validez:* ' + dias + ' días y ' + horas + ' horas%0A%0A';
-            msg += '*Nota:* Cotización aferrada al dólar BCV del día%0A%0A';
-            msg += '📎 *Adjunto PDF de la cotización*%0A%0A';
+            msg += '*Validez:* ' + dias + ' dias y ' + horas + ' horas%0A%0A';
+            msg += '*Nota:* Cotizacion aferrada al dolar BCV del dia%0A%0A';
+            msg += '📎 *Adjunto PDF de la cotizacion*%0A%0A';
             msg += 'Gracias por su preferencia.';
             
             const url = 'https://wa.me/58' + telefono + '?text=' + msg;
@@ -1002,11 +1008,11 @@
                 return;
             }
             const numero = String(currentNumero).padStart(5, '0');
-            const asunto = 'Cotización Nº ' + numero + ' - PLF Soluciones de Gas';
-            const cuerpo = 'Estimado cliente,%0D%0A%0D%0AAdjuntamos su cotización Nº ' + numero + '.%0D%0A%0D%0A' +
+            const asunto = 'Cotizacion Nº ' + numero + ' - PLF Soluciones de Gas';
+            const cuerpo = 'Estimado cliente,%0D%0A%0D%0AAdjuntamos su cotizacion Nº ' + numero + '.%0D%0A%0D%0A' +
                           'Total: ' + document.getElementById('total').textContent + '%0D%0A' +
-                          'Validez: ' + document.getElementById('validez-dias').value + ' días%0D%0A%0D%0A' +
-                          'Nota: Cotización aferrada al dólar BCV del día.%0D%0A%0D%0A' +
+                          'Validez: ' + document.getElementById('validez-dias').value + ' dias%0D%0A%0D%0A' +
+                          'Nota: Cotizacion aferrada al dolar BCV del dia.%0D%0A%0D%0A' +
                           'Por favor adjunte el PDF descargado.%0D%0A%0D%0ASaludos cordiales.';
             
             window.location.href = 'mailto:' + email + '?subject=' + encodeURIComponent(asunto) + '&body=' + cuerpo;
@@ -1029,7 +1035,7 @@
                     li.innerHTML = `
                         <div>
                             <strong style="color: #1e3a8a; font-size: 16px;">
-                                Cotización Nº ${String(cot.numero).padStart(5, '0')}
+                                Cotizacion Nº ${String(cot.numero).padStart(5, '0')}
                             </strong><br>
                             <small style="color: #6b7280;">
                                 ${cot.cliente.nombre} · ${fecha}
@@ -1082,7 +1088,7 @@
             toggleIVA();
             calcularTotales();
             cerrarHistorial();
-            mostrarNotificacion('Cotización cargada exitosamente');
+            mostrarNotificacion('Cotizacion cargada exitosamente');
         }
 
         function mostrarNotificacion(msg, tipo = 'success') {
