@@ -1,0 +1,22 @@
+{
+    "name": "PLF Cotizador",
+    "short_name": "PLF Gas",
+    "description": "Sistema de cotización PLF Soluciones de Gas",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#1e3a8a",
+    "theme_color": "#1e3a8a",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "logo-plf.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "logo-plf.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
