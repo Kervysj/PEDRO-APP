@@ -416,6 +416,10 @@
                         <label>Dirección</label>
                         <input type="text" id="cliente-direccion" placeholder="Dirección completa">
                     </div>
+                    <div class="form-group">
+                        <label>RIF / Cédula</label>
+                        <input type="text" id="cliente-rif" placeholder="J-12345678-9">
+                    </div>
                 </div>
             </div>
 
@@ -442,7 +446,6 @@
                 </button>
             </div>
 
-            <!-- Configuración de IVA -->
             <div class="section">
                 <div class="checkbox-group">
                     <input type="checkbox" id="aplicar-iva" onchange="toggleIVA()">
@@ -474,17 +477,14 @@
                 <h3><i class="ti ti-clock"></i> Validez de la oferta</h3>
                 <div class="validity-inputs">
                     <label>Válida por:</label>
-                    <input type="number" id="validez-dias" value="7" min="1" max="30">
+                    <input type="number" id="validez-dias" value="15" min="1" max="30">
                     <span>días</span>
-                    <input type="number" id="validez-horas" value="0" min="0" max="23">
-                    <span>horas</span>
                 </div>
                 <p style="margin-top: 10px; font-size: 13px; color: #92400e; font-style: italic;">
                     <strong>Nota importante:</strong> Los precios reflejados tienen validez únicamente durante el período indicado.
                 </p>
             </div>
 
-            <!-- Nota BCV -->
             <div class="bcv-note">
                 <p>
                     <i class="ti ti-currency-dollar"></i>
@@ -749,6 +749,7 @@
                 document.getElementById('cliente-telefono').value = '';
                 document.getElementById('cliente-email').value = '';
                 document.getElementById('cliente-direccion').value = '';
+                document.getElementById('cliente-rif').value = '';
                 document.getElementById('aplicar-iva').checked = false;
                 document.getElementById('porcentaje-iva').value = '16';
                 document.getElementById('items-body').innerHTML = '';
@@ -770,7 +771,8 @@
                     nombre: document.getElementById('cliente-nombre').value,
                     telefono: document.getElementById('cliente-telefono').value,
                     email: document.getElementById('cliente-email').value,
-                    direccion: document.getElementById('cliente-direccion').value
+                    direccion: document.getElementById('cliente-direccion').value,
+                    rif: document.getElementById('cliente-rif').value
                 },
                 items: [],
                 aplicaIVA: document.getElementById('aplicar-iva').checked,
@@ -779,8 +781,7 @@
                 iva: document.getElementById('iva').textContent,
                 total: document.getElementById('total').textContent,
                 validez: {
-                    dias: document.getElementById('validez-dias').value,
-                    horas: document.getElementById('validez-horas').value
+                    dias: document.getElementById('validez-dias').value
                 }
             };
             
@@ -802,16 +803,34 @@
             mostrarNotificacion('Cotización guardada exitosamente');
         }
 
+        // ============================================================
+        // FUNCIÓN GENERAR PDF - DISEÑO PROFESIONAL MEJORADO
+        // ============================================================
         async function generarPDF() {
             if (!validarForm()) return;
             
             try {
                 const { jsPDF } = window.jspdf;
-                const doc = new jsPDF();
+                const doc = new jsPDF('p', 'mm', 'letter');
+                
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
+                const margin = 15;
+                const contentWidth = pageWidth - (margin * 2);
+                
+                // Colores corporativos
+                const colorPrimary = [30, 58, 138];      // Azul oscuro
+                const colorSecondary = [249, 115, 22];   // Naranja
+                const colorLight = [243, 244, 246];      // Gris claro
+                const colorText = [31, 41, 55];          // Texto oscuro
+                const colorGray = [107, 114, 128];       // Gris medio
+                
+                // ============ HEADER ============
+                let currentY = margin;
                 
                 // Logo
-                const logoUrl = 'https://raw.githubusercontent.com/Kervysj/PEDRO-APP/main/11111.jpg';
                 try {
+                    const logoUrl = 'https://raw.githubusercontent.com/Kervysj/PEDRO-APP/main/11111.jpg';
                     const logoResponse = await fetch(logoUrl);
                     const logoBlob = await logoResponse.blob();
                     const reader = new FileReader();
@@ -819,110 +838,223 @@
                     const logoData = await new Promise(resolve => {
                         reader.onloadend = () => resolve(reader.result);
                     });
-                    doc.addImage(logoData, 'JPEG', 10, 10, 50, 25);
+                    doc.addImage(logoData, 'JPEG', margin, currentY, 35, 17);
                 } catch (e) {
                     console.log('Logo no cargado:', e);
                 }
                 
-                // Empresa
-                doc.setFontSize(16);
-                doc.setTextColor(30, 58, 138);
-                doc.text('PLF SOLUCIONES DE GAS', 200, 20, { align: 'right' });
+                // Info empresa (derecha)
+                doc.setFontSize(14);
+                doc.setTextColor(...colorPrimary);
+                doc.setFont(undefined, 'bold');
+                doc.text('PLF SOLUCIONES DE GAS', pageWidth - margin, currentY + 5, { align: 'right' });
+                
+                doc.setFontSize(8);
+                doc.setTextColor(...colorGray);
+                doc.setFont(undefined, 'normal');
+                doc.text('Especialistas en Instalaciones y Sistemas de Gas', pageWidth - margin, currentY + 10, { align: 'right' });
+                doc.text('El Tigre, Estado Anzoátegui', pageWidth - margin, currentY + 14, { align: 'right' });
+                
+                currentY += 22;
+                
+                // Línea separadora
+                doc.setDrawColor(...colorPrimary);
+                doc.setLineWidth(0.5);
+                doc.line(margin, currentY, pageWidth - margin, currentY);
+                currentY += 8;
+                
+                // ============ TÍTULO PRESUPUESTO ============
+                // Fondo azul oscuro
+                doc.setFillColor(...colorPrimary);
+                doc.rect(margin, currentY, contentWidth, 12, 'F');
+                
+                doc.setFontSize(13);
+                doc.setTextColor(255, 255, 255);
+                doc.setFont(undefined, 'bold');
+                doc.text('PRESUPUESTO', margin + 5, currentY + 8);
+                
+                // Número y fecha (derecha)
                 doc.setFontSize(9);
-                doc.setTextColor(100);
-                doc.text('RIF: V-18228860-4', 200, 26, { align: 'right' });
-                doc.text('Calle Paez, Casa Nro. 55-66, Sector Jose Felix Ribas', 200, 31, { align: 'right' });
-                doc.text('San Jose de Guanipa (El Tigrito), Anzoategui - CP 6054', 200, 36, { align: 'right' });
+                doc.text('N° Cotización: PSG-' + new Date().getFullYear() + '-' + String(currentNumero).padStart(4, '0'), pageWidth - margin - 5, currentY + 5, { align: 'right' });
+                doc.text('Fecha: ' + new Date().toLocaleDateString('es-VE'), pageWidth - margin - 5, currentY + 9, { align: 'right' });
                 
-                // Título
-                doc.setFontSize(20);
-                doc.setTextColor(30, 58, 138);
-                doc.text('COTIZACION', 105, 50, { align: 'center' });
-                doc.setFontSize(12);
-                doc.text('Nº ' + String(currentNumero).padStart(5, '0'), 105, 58, { align: 'center' });
+                currentY += 18;
                 
-                // Fecha
-                doc.text('Fecha: ' + new Date().toLocaleDateString('es-VE'), 200, 65, { align: 'right' });
+                // ============ SECCIÓN CLIENTE ============
+                doc.setFillColor(248, 250, 252);
+                doc.rect(margin, currentY, contentWidth, 22, 'F');
+                doc.setDrawColor(226, 232, 240);
+                doc.setLineWidth(0.3);
+                doc.rect(margin, currentY, contentWidth, 22, 'S');
                 
-                // Cliente
+                // Borde izquierdo naranja
+                doc.setDrawColor(...colorSecondary);
+                doc.setLineWidth(1);
+                doc.line(margin, currentY, margin, currentY + 22);
+                
+                doc.setFontSize(9);
+                doc.setTextColor(...colorPrimary);
+                doc.setFont(undefined, 'bold');
+                doc.text('CLIENTE', margin + 5, currentY + 6);
+                
                 doc.setFontSize(11);
-                doc.setTextColor(30, 58, 138);
-                doc.text('CLIENTE:', 10, 75);
-                doc.setFontSize(10);
-                doc.setTextColor(0);
-                doc.text(document.getElementById('cliente-nombre').value, 10, 82);
-                doc.text('Tel: ' + document.getElementById('cliente-telefono').value, 10, 89);
+                doc.setTextColor(...colorText);
+                doc.text(document.getElementById('cliente-nombre').value, margin + 5, currentY + 13);
                 
-                // Tabla
+                doc.setFontSize(8);
+                doc.setTextColor(...colorGray);
+                const rif = document.getElementById('cliente-rif').value || 'N/A';
+                const tel = document.getElementById('cliente-telefono').value;
+                doc.text('RIF: ' + rif + '  |  Teléfono: ' + tel, margin + 5, currentY + 19);
+                
+                currentY += 28;
+                
+                // ============ TABLA DE ÍTEMS ============
                 const items = [];
-                document.querySelectorAll('#items-body tr').forEach(row => {
+                document.querySelectorAll('#items-body tr').forEach((row, i) => {
                     items.push([
+                        (i + 1).toString(),
                         row.querySelector('textarea').value,
-                        row.querySelector('select').value,
+                        row.querySelector('.select').value || row.querySelector('select').value,
                         row.querySelector('.cantidad').value,
-                        '$' + parseFloat(row.querySelector('.precio').value).toFixed(2),
-                        row.querySelector('.subtotal').textContent
+                        '$ ' + parseFloat(row.querySelector('.precio').value).toFixed(2).replace('.', ','),
+                        row.querySelector('.subtotal').textContent.replace('$', '$ ').replace('.', ',')
                     ]);
                 });
                 
                 doc.autoTable({
-                    startY: 95,
-                    head: [['Descripcion', 'Unidad', 'Cant.', 'Precio', 'Subtotal']],
+                    startY: currentY,
+                    head: [['ITEM', 'DESCRIPCIÓN DEL SERVICIO / TRABAJO', 'CANT.', 'MONTO USD']],
                     body: items,
                     theme: 'grid',
-                    styles: { fontSize: 9, cellPadding: 3, overflow: 'linebreak' },
-                    headStyles: { fillColor: [30, 58, 138], textColor: 255 },
+                    headStyles: {
+                        fillColor: colorPrimary,
+                        textColor: [255, 255, 255],
+                        fontStyle: 'bold',
+                        fontSize: 9,
+                        halign: 'center',
+                        cellPadding: 3
+                    },
+                    bodyStyles: {
+                        fontSize: 9,
+                        textColor: colorText,
+                        cellPadding: 3
+                    },
                     columnStyles: {
-                        0: { cellWidth: 80 },
-                        1: { cellWidth: 25, halign: 'center' },
+                        0: { cellWidth: 12, halign: 'center', fontStyle: 'bold' },
+                        1: { cellWidth: 110, halign: 'left' },
                         2: { cellWidth: 20, halign: 'center' },
-                        3: { cellWidth: 30, halign: 'right' },
-                        4: { cellWidth: 30, halign: 'right' }
+                        3: { cellWidth: 25, halign: 'right' },
+                        4: { cellWidth: 28, halign: 'right' }
+                    },
+                    alternateRowStyles: {
+                        fillColor: [248, 250, 252]
+                    },
+                    styles: {
+                        overflow: 'linebreak',
+                        lineColor: [226, 232, 240],
+                        lineWidth: 0.2
+                    },
+                    didParseCell: function(data) {
+                        // Fusionar columnas 3 y 4 en el header (CANT y MONTO)
+                        if (data.section === 'head' && data.column.index === 3) {
+                            // No hacer nada especial
+                        }
                     }
                 });
                 
-                // Totales
-                const y = doc.lastAutoTable.finalY + 10;
+                // ============ TOTALES ============
+                const tableEndY = doc.lastAutoTable.finalY;
+                currentY = tableEndY + 5;
+                
                 const aplicarIVA = document.getElementById('aplicar-iva').checked;
                 const porcentajeIVA = document.getElementById('porcentaje-iva').value;
+                const subtotalText = document.getElementById('subtotal').textContent;
+                const ivaText = document.getElementById('iva').textContent;
+                const totalText = document.getElementById('total').textContent;
                 
-                doc.setFontSize(11);
-                doc.setTextColor(30, 58, 138);
-                doc.text('Subtotal: ' + document.getElementById('subtotal').textContent, 200, y, { align: 'right' });
+                // Subtotal
+                doc.setFontSize(10);
+                doc.setTextColor(...colorText);
+                doc.text('Subtotal:', pageWidth - margin - 60, currentY, { align: 'right' });
+                doc.text(subtotalText.replace('.', ','), pageWidth - margin, currentY, { align: 'right' });
+                currentY += 7;
                 
+                // IVA (si aplica)
                 if (aplicarIVA) {
-                    doc.text('IVA (' + porcentajeIVA + '%): ' + document.getElementById('iva').textContent, 200, y + 7, { align: 'right' });
+                    doc.text('IVA (' + porcentajeIVA + '%):', pageWidth - margin - 60, currentY, { align: 'right' });
+                    doc.text(ivaText.replace('.', ','), pageWidth - margin, currentY, { align: 'right' });
+                    currentY += 7;
                 }
                 
-                doc.setFontSize(14);
-                doc.text('TOTAL: ' + document.getElementById('total').textContent, 200, y + (aplicarIVA ? 16 : 10), { align: 'right' });
+                // Línea separadora
+                doc.setDrawColor(...colorPrimary);
+                doc.setLineWidth(0.5);
+                doc.line(pageWidth - margin - 65, currentY - 2, pageWidth - margin, currentY - 2);
                 
-                // Validez
-                const dias = document.getElementById('validez-dias').value;
-                const horas = document.getElementById('validez-horas').value;
-                doc.setFontSize(9);
-                doc.setTextColor(100);
-                doc.text('Validez: ' + dias + ' dias y ' + horas + ' horas', 10, y + 30);
+                // TOTAL destacado
+                currentY += 3;
+                doc.setFillColor(241, 245, 249);
+                doc.rect(pageWidth - margin - 70, currentY - 5, 70, 10, 'F');
                 
-                // Nota BCV
-                doc.setFontSize(9);
-                doc.setTextColor(30, 58, 138);
+                doc.setFontSize(12);
                 doc.setFont(undefined, 'bold');
-                const splitNote = doc.splitTextToSize(
-                    'COTIZACION AFERRADA AL DOLAR BCV DEL DIA - Los montos estan expresados en dolares americanos (USD) y estan sujetos a la tasa de cambio oficial del BCV del dia del pago.',
-                    180
-                );
-                doc.text(splitNote, 10, y + 45);
+                doc.setTextColor(...colorPrimary);
+                doc.text('TOTAL:', pageWidth - margin - 60, currentY + 1, { align: 'right' });
+                doc.text(totalText.replace('$', '$ ').replace('.', ','), pageWidth - margin - 5, currentY + 1, { align: 'right' });
                 
-                // Footer
+                currentY += 15;
+                
+                // ============ CONDICIONES COMERCIALES ============
+                doc.setFillColor(248, 250, 252);
+                doc.rect(margin, currentY, contentWidth, 35, 'F');
+                doc.setDrawColor(226, 232, 240);
+                doc.setLineWidth(0.3);
+                doc.rect(margin, currentY, contentWidth, 35, 'S');
+                
+                // Borde izquierdo naranja
+                doc.setDrawColor(...colorSecondary);
+                doc.setLineWidth(1);
+                doc.line(margin, currentY, margin, currentY + 35);
+                
+                doc.setFontSize(10);
+                doc.setTextColor(...colorPrimary);
+                doc.setFont(undefined, 'bold');
+                doc.text('CONDICIONES COMERCIALES Y OBSERVACIONES', margin + 5, currentY + 7);
+                
                 doc.setFontSize(8);
-                doc.setTextColor(100);
+                doc.setTextColor(...colorText);
                 doc.setFont(undefined, 'normal');
-                doc.text('PLF Soluciones de Gas - RIF: V-18228860-4', 105, 280, { align: 'center' });
                 
-                // Guardar
+                const dias = document.getElementById('validez-dias').value;
+                const condiciones = [
+                    '• Validez del Presupuesto: ' + dias + ' días continuos a partir de la fecha de emisión.',
+                    '• Forma de Pago: Los montos expresados en Divisas ($) pueden ser cancelados en Bolívares (VES) a la tasa oficial',
+                    '  del Banco Central de Venezuela (BCV) del día de pago.',
+                    '• Garantía: Trabajos garantizados bajo normativa técnica vigente.'
+                ];
+                
+                let condY = currentY + 14;
+                condiciones.forEach(cond => {
+                    doc.text(cond, margin + 5, condY);
+                    condY += 4;
+                });
+                
+                currentY += 42;
+                
+                // ============ FOOTER ============
+                doc.setDrawColor(...colorPrimary);
+                doc.setLineWidth(0.3);
+                doc.line(margin, pageHeight - 20, pageWidth - margin, pageHeight - 20);
+                
+                doc.setFontSize(7);
+                doc.setTextColor(...colorGray);
+                doc.text('PLF SOLUCIONES DE GAS — Compromiso, Calidad y Seguridad en Servicios de Gas', pageWidth / 2, pageHeight - 15, { align: 'center' });
+                doc.text('RIF: V-18228860-4 | Calle Páez, Casa Nro. 55-66, Sector José Félix Ribas, San José de Guanipa (El Tigrito), Anzoátegui — CP 6054', pageWidth / 2, pageHeight - 11, { align: 'center' });
+                
+                // ============ GUARDAR PDF ============
                 const nombre = document.getElementById('cliente-nombre').value.replace(/[^a-z0-9]/gi, '_');
-                const fileName = 'Cotizacion_' + String(currentNumero).padStart(5, '0') + '_' + nombre + '.pdf';
+                const fileName = 'Presupuesto_PLF_' + String(currentNumero).padStart(4, '0') + '_' + nombre + '.pdf';
                 doc.save(fileName);
                 
                 mostrarNotificacion('PDF generado: ' + fileName);
@@ -945,11 +1077,8 @@
         }
 
         async function descargarYEnviarWhatsApp() {
-            // Primero generar y descargar PDF
             const fileName = await generarPDF();
-            
             if (fileName) {
-                // Esperar un momento para que se descargue
                 setTimeout(() => {
                     abrirWhatsApp();
                 }, 1500);
@@ -962,14 +1091,13 @@
             const telefono = document.getElementById('cliente-telefono').value.replace(/[^0-9]/g, '');
             const numero = String(currentNumero).padStart(5, '0');
             const dias = document.getElementById('validez-dias').value;
-            const horas = document.getElementById('validez-horas').value;
             
             let msg = '*PLF SOLUCIONES DE GAS*%0A';
             msg += 'RIF: V-18228860-4%0A';
             msg += 'Calle Paez, Casa Nro. 55-66, Sector Jose Felix Ribas%0A';
             msg += 'San Jose de Guanipa (El Tigrito), Anzoategui - CP 6054%0A';
             msg += '---------------------------%0A%0A';
-            msg += '*COTIZACION Nº ' + numero + '*%0A%0A';
+            msg += '*PRESUPUESTO Nº PSG-' + new Date().getFullYear() + '-' + String(currentNumero).padStart(4, '0') + '*%0A%0A';
             msg += '*Cliente:* ' + cliente + '%0A';
             msg += '*Fecha:* ' + new Date().toLocaleDateString('es-VE') + '%0A%0A';
             msg += '*Items:*%0A';
@@ -989,7 +1117,7 @@
             }
             
             msg += '*TOTAL:* ' + total + '%0A%0A';
-            msg += '*Validez:* ' + dias + ' dias y ' + horas + ' horas%0A%0A';
+            msg += '*Validez:* ' + dias + ' dias%0A%0A';
             msg += '*Nota:* Cotizacion aferrada al dolar BCV del dia%0A%0A';
             msg += '📎 *Adjunto PDF de la cotizacion*%0A%0A';
             msg += 'Gracias por su preferencia.';
@@ -1008,8 +1136,8 @@
                 return;
             }
             const numero = String(currentNumero).padStart(5, '0');
-            const asunto = 'Cotizacion Nº ' + numero + ' - PLF Soluciones de Gas';
-            const cuerpo = 'Estimado cliente,%0D%0A%0D%0AAdjuntamos su cotizacion Nº ' + numero + '.%0D%0A%0D%0A' +
+            const asunto = 'Presupuesto PSG-' + new Date().getFullYear() + '-' + String(currentNumero).padStart(4, '0') + ' - PLF Soluciones de Gas';
+            const cuerpo = 'Estimado cliente,%0D%0A%0D%0AAdjuntamos su presupuesto.%0D%0A%0D%0A' +
                           'Total: ' + document.getElementById('total').textContent + '%0D%0A' +
                           'Validez: ' + document.getElementById('validez-dias').value + ' dias%0D%0A%0D%0A' +
                           'Nota: Cotizacion aferrada al dolar BCV del dia.%0D%0A%0D%0A' +
@@ -1035,7 +1163,7 @@
                     li.innerHTML = `
                         <div>
                             <strong style="color: #1e3a8a; font-size: 16px;">
-                                Cotizacion Nº ${String(cot.numero).padStart(5, '0')}
+                                Presupuesto PSG-${new Date(cot.fecha).getFullYear()}-${String(cot.numero).padStart(4, '0')}
                             </strong><br>
                             <small style="color: #6b7280;">
                                 ${cot.cliente.nombre} · ${fecha}
@@ -1067,10 +1195,10 @@
             document.getElementById('cliente-telefono').value = cot.cliente.telefono;
             document.getElementById('cliente-email').value = cot.cliente.email || '';
             document.getElementById('cliente-direccion').value = cot.cliente.direccion || '';
+            document.getElementById('cliente-rif').value = cot.cliente.rif || '';
             document.getElementById('aplicar-iva').checked = cot.aplicaIVA || false;
             document.getElementById('porcentaje-iva').value = cot.porcentajeIVA || '16';
             document.getElementById('validez-dias').value = cot.validez.dias;
-            document.getElementById('validez-horas').value = cot.validez.horas;
             
             document.getElementById('items-body').innerHTML = '';
             itemCounter = 0;
