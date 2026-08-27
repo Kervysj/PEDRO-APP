@@ -39,6 +39,16 @@
         }
         .company-info h1 { font-size: 24px; margin-bottom: 5px; }
         .company-info p { font-size: 13px; opacity: 0.9; }
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
         .toolbar {
             display: flex;
             gap: 10px;
@@ -103,6 +113,43 @@
             white-space: pre-wrap;
             word-wrap: break-word;
         }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 12px;
+            background: #f0f9ff;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .checkbox-group label {
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+        }
+        .iva-config {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 10px;
+            background: #fef3c7;
+            border-radius: 8px;
+            border-left: 4px solid #f59e0b;
+        }
+        .iva-config input {
+            width: 80px;
+            padding: 8px;
+            border: 2px solid #fbbf24;
+            border-radius: 6px;
+            text-align: center;
+        }
         .table-container {
             overflow-x: auto;
             margin-bottom: 20px;
@@ -165,6 +212,12 @@
             padding-top: 15px;
             border-top: 3px solid #f97316;
         }
+        .total-row.iva-row {
+            display: none;
+        }
+        .total-row.iva-row.active {
+            display: flex;
+        }
         .validity-section {
             background: #fef3c7;
             border-left: 4px solid #f97316;
@@ -180,6 +233,27 @@
             border: 2px solid #fbbf24;
             border-radius: 6px;
             text-align: center;
+        }
+        .bcv-note {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .bcv-note p {
+            color: #1e40af;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .bcv-note small {
+            display: block;
+            margin-top: 5px;
+            color: #3b82f6;
+            font-weight: 400;
         }
         .footer {
             background: #f3f4f6;
@@ -242,6 +316,21 @@
             justify-content: space-between;
             align-items: center;
         }
+        .whatsapp-info {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .whatsapp-info ol {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        .whatsapp-info li {
+            margin: 8px 0;
+            color: #065f46;
+        }
         .notification {
             position: fixed;
             top: 20px;
@@ -270,6 +359,10 @@
 <body>
     <div class="container">
         <header class="header">
+            <div class="status-badge" id="connection-status">
+                <i class="ti ti-wifi"></i>
+                <span>Modo sin conexión activo</span>
+            </div>
             <div class="logo-container">
                 <img src="https://raw.githubusercontent.com/Kervysj/PEDRO-APP/main/11111.jpg" 
                      alt="PLF Soluciones de Gas" class="logo-img" id="logo-img" crossorigin="anonymous">
@@ -283,26 +376,22 @@
 
         <div class="toolbar">
             <button class="btn btn-primary" onclick="nuevaCotizacion()">
-                <i class="ti ti-plus"></i> Nueva
+                <i class="ti ti-plus"></i> Nueva cotización
             </button>
-            <button class="btn btn-info" onclick="guardarCotizacion()">
-                <i class="ti ti-device-floppy"></i> Guardar
-            </button>
-            <button class="btn btn-success" onclick="generarPDF()">
-                <i class="ti ti-file-pdf"></i> PDF
-            </button>
-            <button class="btn btn-warning" onclick="enviarWhatsApp()">
-                <i class="ti ti-brand-whatsapp"></i> WhatsApp
-            </button>
-            <button class="btn btn-primary" onclick="mostrarHistorial()">
+            <button class="btn btn-info" onclick="mostrarHistorial()">
                 <i class="ti ti-history"></i> Historial
             </button>
         </div>
 
         <div class="content">
             <h2 style="text-align: center; color: #1e3a8a; margin-bottom: 20px;">
-                COTIZACIÓN Nº <span id="cotizacion-numero">--</span>
+                COTIZACIÓN
             </h2>
+            <div style="text-align: center; margin-bottom: 20px;">
+                <span style="font-size: 18px; font-weight: 700; color: #2563eb;">
+                    Nº <span id="cotizacion-numero">--</span>
+                </span>
+            </div>
             <div style="text-align: right; margin-bottom: 20px; color: #6b7280;">
                 Fecha: <span id="fecha-actual"></span>
             </div>
@@ -312,7 +401,7 @@
                 <div class="form-grid">
                     <div class="form-group">
                         <label>Nombre del Cliente *</label>
-                        <input type="text" id="cliente-nombre" placeholder="Nombre completo">
+                        <input type="text" id="cliente-nombre" placeholder="Nombre completo o razón social">
                     </div>
                     <div class="form-group">
                         <label>Teléfono / Contacto *</label>
@@ -352,13 +441,26 @@
                 </button>
             </div>
 
+            <!-- Configuración de IVA -->
+            <div class="section">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="aplicar-iva" onchange="toggleIVA()">
+                    <label for="aplicar-iva">Aplicar IVA a esta cotización</label>
+                </div>
+                <div class="iva-config" id="iva-config" style="display: none;">
+                    <label for="porcentaje-iva"><i class="ti ti-percentage"></i> Porcentaje de IVA:</label>
+                    <input type="number" id="porcentaje-iva" value="16" min="0" max="100" step="0.01" onchange="calcularTotales()">
+                    <span>%</span>
+                </div>
+            </div>
+
             <div class="totals-section">
                 <div class="total-row">
                     <span>Subtotal:</span>
                     <span id="subtotal">$0.00</span>
                 </div>
-                <div class="total-row">
-                    <span>IVA (16%):</span>
+                <div class="total-row iva-row" id="iva-row">
+                    <span>IVA (<span id="iva-label">16</span>%):</span>
                     <span id="iva">$0.00</span>
                 </div>
                 <div class="total-row">
@@ -379,6 +481,18 @@
                 <p style="margin-top: 10px; font-size: 13px; color: #92400e; font-style: italic;">
                     <strong>Nota importante:</strong> Los precios reflejados tienen validez únicamente durante el período indicado.
                 </p>
+            </div>
+
+            <!-- Nota BCV -->
+            <div class="bcv-note">
+                <p>
+                    <i class="ti ti-currency-dollar"></i>
+                    COTIZACIÓN AFERRADA AL DÓLAR BCV DEL DÍA
+                </p>
+                <small>
+                    Los montos de esta cotización están expresados en dólares americanos (USD) y están 
+                    sujetos a la tasa de cambio oficial del Banco Central de Venezuela (BCV) del día del pago.
+                </small>
             </div>
         </div>
 
@@ -407,7 +521,7 @@
     <div class="modal" id="history-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2><i class="ti ti-history"></i> Historial de Cotizaciones</h2>
+                <h2><i class="ti ti-history"></i> Historial de Cotizaciones Guardadas</h2>
                 <button class="modal-close" onclick="cerrarHistorial()">&times;</button>
             </div>
             <div class="modal-body">
@@ -422,22 +536,39 @@
     <div class="modal" id="whatsapp-modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2><i class="ti ti-brand-whatsapp"></i> Enviar por WhatsApp</h2>
+                <h2><i class="ti ti-brand-whatsapp"></i> Enviar Cotización por WhatsApp</h2>
                 <button class="modal-close" onclick="cerrarWhatsApp()">&times;</button>
             </div>
             <div class="modal-body">
-                <p style="margin-bottom: 15px;">El mensaje está listo para enviarse a <strong id="whatsapp-cliente"></strong></p>
-                <ol style="margin-left: 20px; margin-bottom: 20px;">
-                    <li>Haz clic en "Abrir WhatsApp"</li>
-                    <li>Se abrirá la aplicación con el texto</li>
-                    <li>Selecciona el chat y presiona Enviar</li>
-                </ol>
-                <div style="display: flex; gap: 10px;">
-                    <button class="btn" onclick="cerrarWhatsApp()" style="flex: 1; background: #6b7280; color: white;">
-                        Cancelar
+                <p style="margin-bottom: 15px;">
+                    El mensaje con el resumen y los montos está listo para enviarse a 
+                    <strong id="whatsapp-cliente"></strong>
+                </p>
+                
+                <div class="whatsapp-info">
+                    <strong><i class="ti ti-info-circle"></i> Instrucciones:</strong>
+                    <ol>
+                        <li>Haz clic en "Abrir WhatsApp" para generar el mensaje</li>
+                        <li>Se abrirá la aplicación con el texto redactado</li>
+                        <li><strong>Adjunta el PDF descargado</strong> desde tu carpeta de descargas</li>
+                        <li>Selecciona el chat del cliente y presiona Enviar</li>
+                    </ol>
+                </div>
+
+                <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px; border-radius: 6px; margin: 15px 0;">
+                    <p style="color: #92400e; font-size: 14px; margin: 0;">
+                        <i class="ti ti-alert-triangle"></i> 
+                        <strong>Importante:</strong> No olvides adjuntar el archivo PDF de la cotización 
+                        antes de enviar el mensaje.
+                    </p>
+                </div>
+
+                <div style="display: flex; gap: 10px; flex-direction: column;">
+                    <button class="btn btn-success" onclick="descargarYEnviarWhatsApp()" style="width: 100%;">
+                        <i class="ti ti-file-download"></i> Descargar PDF y Abrir WhatsApp
                     </button>
-                    <button class="btn btn-success" onclick="abrirWhatsApp()" style="flex: 1;">
-                        <i class="ti ti-brand-whatsapp"></i> Abrir WhatsApp
+                    <button class="btn" onclick="cerrarWhatsApp()" style="width: 100%; background: #6b7280; color: white;">
+                        Cancelar
                     </button>
                 </div>
             </div>
@@ -466,7 +597,8 @@
 
         function updateFecha() {
             const now = new Date();
-            document.getElementById('fecha-actual').textContent = now.toLocaleDateString('es-VE');
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('fecha-actual').textContent = now.toLocaleDateString('es-VE', options);
         }
 
         function loadNumero() {
@@ -484,7 +616,7 @@
             row.innerHTML = `
                 <td style="text-align: center;">${itemCounter}</td>
                 <td>
-                    <textarea class="item-input" placeholder="Descripción detallada..." 
+                    <textarea class="item-input" placeholder="Descripción detallada del producto o servicio..." 
                               oninput="ajustarTextarea(this)"></textarea>
                 </td>
                 <td>
@@ -540,6 +672,21 @@
             });
         }
 
+        function toggleIVA() {
+            const checkbox = document.getElementById('aplicar-iva');
+            const config = document.getElementById('iva-config');
+            const ivaRow = document.getElementById('iva-row');
+            
+            if (checkbox.checked) {
+                config.style.display = 'flex';
+                ivaRow.classList.add('active');
+            } else {
+                config.style.display = 'none';
+                ivaRow.classList.remove('active');
+            }
+            calcularTotales();
+        }
+
         function calcularTotales() {
             let subtotal = 0;
             document.querySelectorAll('#items-body tr').forEach(row => {
@@ -550,8 +697,18 @@
                 subtotal += total;
             });
             
-            const iva = subtotal * 0.16;
-            const total = subtotal + iva;
+            const aplicarIVA = document.getElementById('aplicar-iva').checked;
+            const porcentajeIVA = parseFloat(document.getElementById('porcentaje-iva').value) || 0;
+            
+            document.getElementById('iva-label').textContent = porcentajeIVA;
+            
+            let iva = 0;
+            let total = subtotal;
+            
+            if (aplicarIVA) {
+                iva = subtotal * (porcentajeIVA / 100);
+                total = subtotal + iva;
+            }
             
             document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
             document.getElementById('iva').textContent = '$' + iva.toFixed(2);
@@ -583,15 +740,18 @@
         }
 
         function nuevaCotizacion() {
-            if (confirm('¿Crear nueva cotización?')) {
+            if (confirm('¿Crear nueva cotización? Se perderán los datos no guardados.')) {
                 document.getElementById('cliente-nombre').value = '';
                 document.getElementById('cliente-telefono').value = '';
                 document.getElementById('cliente-email').value = '';
                 document.getElementById('cliente-direccion').value = '';
+                document.getElementById('aplicar-iva').checked = false;
+                document.getElementById('porcentaje-iva').value = '16';
                 document.getElementById('items-body').innerHTML = '';
                 itemCounter = 0;
                 agregarItem();
                 loadNumero();
+                toggleIVA();
                 mostrarNotificacion('Nueva cotización creada');
             }
         }
@@ -609,6 +769,8 @@
                     direccion: document.getElementById('cliente-direccion').value
                 },
                 items: [],
+                aplicaIVA: document.getElementById('aplicar-iva').checked,
+                porcentajeIVA: document.getElementById('porcentaje-iva').value,
                 subtotal: document.getElementById('subtotal').textContent,
                 iva: document.getElementById('iva').textContent,
                 total: document.getElementById('total').textContent,
@@ -633,7 +795,7 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(cotizaciones));
             localStorage.setItem('plf_last_numero', currentNumero);
             
-            mostrarNotificacion('Cotización guardada');
+            mostrarNotificacion('Cotización guardada exitosamente');
         }
 
         async function generarPDF() {
@@ -643,7 +805,7 @@
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF();
                 
-                // Logo desde GitHub
+                // Logo
                 const logoUrl = 'https://raw.githubusercontent.com/Kervysj/PEDRO-APP/main/11111.jpg';
                 try {
                     const logoResponse = await fetch(logoUrl);
@@ -717,28 +879,54 @@
                 
                 // Totales
                 const y = doc.lastAutoTable.finalY + 10;
+                const aplicarIVA = document.getElementById('aplicar-iva').checked;
+                const porcentajeIVA = document.getElementById('porcentaje-iva').value;
+                
                 doc.setFontSize(11);
                 doc.setTextColor(30, 58, 138);
                 doc.text('Subtotal: ' + document.getElementById('subtotal').textContent, 200, y, { align: 'right' });
-                doc.text('IVA: ' + document.getElementById('iva').textContent, 200, y + 7, { align: 'right' });
+                
+                if (aplicarIVA) {
+                    doc.text('IVA (' + porcentajeIVA + '%): ' + document.getElementById('iva').textContent, 200, y + 7, { align: 'right' });
+                }
+                
                 doc.setFontSize(14);
-                doc.text('TOTAL: ' + document.getElementById('total').textContent, 200, y + 16, { align: 'right' });
+                doc.text('TOTAL: ' + document.getElementById('total').textContent, 200, y + (aplicarIVA ? 16 : 10), { align: 'right' });
                 
                 // Validez
                 const dias = document.getElementById('validez-dias').value;
                 const horas = document.getElementById('validez-horas').value;
                 doc.setFontSize(9);
                 doc.setTextColor(100);
-                doc.text(`Validez: ${dias} días y ${horas} horas`, 10, y + 30);
+                doc.text('Validez: ' + dias + ' días y ' + horas + ' horas', 10, y + 30);
+                
+                // Nota BCV
+                doc.setFontSize(9);
+                doc.setTextColor(30, 58, 138);
+                doc.setFont(undefined, 'bold');
+                const splitNote = doc.splitTextToSize(
+                    'COTIZACIÓN AFERRADA AL DÓLAR BCV DEL DÍA - Los montos están expresados en dólares americanos (USD) y están sujetos a la tasa de cambio oficial del BCV del día del pago.',
+                    180
+                );
+                doc.text(splitNote, 10, y + 45);
+                
+                // Footer
+                doc.setFontSize(8);
+                doc.setTextColor(100);
+                doc.setFont(undefined, 'normal');
+                doc.text('PLF Soluciones de Gas - RIF: J-50242520-0', 105, 280, { align: 'center' });
                 
                 // Guardar
                 const nombre = document.getElementById('cliente-nombre').value.replace(/[^a-z0-9]/gi, '_');
-                doc.save(`Cotizacion_${String(currentNumero).padStart(5, '0')}_${nombre}.pdf`);
+                const fileName = 'Cotizacion_' + String(currentNumero).padStart(5, '0') + '_' + nombre + '.pdf';
+                doc.save(fileName);
                 
-                mostrarNotificacion('PDF generado');
+                mostrarNotificacion('PDF generado: ' + fileName);
+                return fileName;
             } catch (e) {
                 console.error(e);
                 mostrarNotificacion('Error al generar PDF: ' + e.message, 'error');
+                return null;
             }
         }
 
@@ -752,33 +940,77 @@
             document.getElementById('whatsapp-modal').classList.remove('active');
         }
 
+        async function descargarYEnviarWhatsApp() {
+            // Primero generar y descargar PDF
+            const fileName = await generarPDF();
+            
+            if (fileName) {
+                // Esperar un momento para que se descargue
+                setTimeout(() => {
+                    abrirWhatsApp();
+                }, 1500);
+            }
+        }
+
         function abrirWhatsApp() {
             const cliente = document.getElementById('cliente-nombre').value;
             const total = document.getElementById('total').textContent;
             const telefono = document.getElementById('cliente-telefono').value.replace(/[^0-9]/g, '');
+            const numero = String(currentNumero).padStart(5, '0');
+            const dias = document.getElementById('validez-dias').value;
+            const horas = document.getElementById('validez-horas').value;
             
-            let msg = `*PLF SOLUCIONES DE GAS*%0A`;
-            msg += `COTIZACIÓN Nº ${String(currentNumero).padStart(5, '0')}%0A`;
-            msg += `Cliente: ${cliente}%0A`;
-            msg += `Total: ${total}%0A%0A`;
+            let msg = '*PLF SOLUCIONES DE GAS*%0A';
+            msg += 'RIF: J-50242520-0%0A';
+            msg += '---------------------------%0A%0A';
+            msg += '*COTIZACIÓN Nº ' + numero + '*%0A%0A';
+            msg += '*Cliente:* ' + cliente + '%0A';
+            msg += '*Fecha:* ' + new Date().toLocaleDateString('es-VE') + '%0A%0A';
+            msg += '*Ítems:*%0A';
             
             document.querySelectorAll('#items-body tr').forEach((row, i) => {
-                msg += `${i+1}. ${row.querySelector('textarea').value}%0A`;
+                msg += (i+1) + '. ' + row.querySelector('textarea').value + '%0A';
+                msg += '   Cant: ' + row.querySelector('.cantidad').value + 
+                       ' x $' + parseFloat(row.querySelector('.precio').value).toFixed(2) + 
+                       ' = ' + row.querySelector('.subtotal').textContent + '%0A';
             });
             
-            window.open(`https://wa.me/58${telefono}?text=${msg}`, '_blank');
+            msg += '%0A*Subtotal:* ' + document.getElementById('subtotal').textContent + '%0A';
+            
+            if (document.getElementById('aplicar-iva').checked) {
+                const porcIVA = document.getElementById('porcentaje-iva').value;
+                msg += '*IVA (' + porcIVA + '%):* ' + document.getElementById('iva').textContent + '%0A';
+            }
+            
+            msg += '*TOTAL:* ' + total + '%0A%0A';
+            msg += '*Validez:* ' + dias + ' días y ' + horas + ' horas%0A%0A';
+            msg += '*Nota:* Cotización aferrada al dólar BCV del día%0A%0A';
+            msg += '📎 *Adjunto PDF de la cotización*%0A%0A';
+            msg += 'Gracias por su preferencia.';
+            
+            const url = 'https://wa.me/58' + telefono + '?text=' + msg;
+            window.open(url, '_blank');
+            
             cerrarWhatsApp();
+            mostrarNotificacion('Abriendo WhatsApp... Recuerda adjuntar el PDF');
         }
 
         function enviarCorreo() {
             const email = document.getElementById('cliente-email').value;
             if (!email) {
-                mostrarNotificacion('Ingrese el correo', 'error');
+                mostrarNotificacion('Ingrese el correo del cliente', 'error');
                 return;
             }
-            const asunto = `Cotización Nº ${String(currentNumero).padStart(5, '0')}`;
-            const cuerpo = `Total: ${document.getElementById('total').textContent}`;
-            window.location.href = `mailto:${email}?subject=${asunto}&body=${cuerpo}`;
+            const numero = String(currentNumero).padStart(5, '0');
+            const asunto = 'Cotización Nº ' + numero + ' - PLF Soluciones de Gas';
+            const cuerpo = 'Estimado cliente,%0D%0A%0D%0AAdjuntamos su cotización Nº ' + numero + '.%0D%0A%0D%0A' +
+                          'Total: ' + document.getElementById('total').textContent + '%0D%0A' +
+                          'Validez: ' + document.getElementById('validez-dias').value + ' días%0D%0A%0D%0A' +
+                          'Nota: Cotización aferrada al dólar BCV del día.%0D%0A%0D%0A' +
+                          'Por favor adjunte el PDF descargado.%0D%0A%0D%0ASaludos cordiales.';
+            
+            window.location.href = 'mailto:' + email + '?subject=' + encodeURIComponent(asunto) + '&body=' + cuerpo;
+            mostrarNotificacion('Abriendo cliente de correo. Adjunte el PDF.');
         }
 
         function mostrarHistorial() {
@@ -787,19 +1019,26 @@
             list.innerHTML = '';
             
             if (cotizaciones.length === 0) {
-                list.innerHTML = '<li style="padding: 20px; text-align: center; color: #6b7280;">Sin cotizaciones</li>';
+                list.innerHTML = '<li style="padding: 20px; text-align: center; color: #6b7280;">' +
+                                '<i class="ti ti-inbox"></i> Sin cotizaciones guardadas</li>';
             } else {
                 cotizaciones.reverse().forEach(cot => {
+                    const fecha = new Date(cot.fecha).toLocaleDateString('es-VE');
                     const li = document.createElement('li');
                     li.className = 'history-item';
                     li.innerHTML = `
                         <div>
-                            <strong>Cotización Nº ${String(cot.numero).padStart(5, '0')}</strong><br>
-                            <small>${cot.cliente.nombre} - ${new Date(cot.fecha).toLocaleDateString('es-VE')}</small><br>
-                            <strong>${cot.total}</strong>
+                            <strong style="color: #1e3a8a; font-size: 16px;">
+                                Cotización Nº ${String(cot.numero).padStart(5, '0')}
+                            </strong><br>
+                            <small style="color: #6b7280;">
+                                ${cot.cliente.nombre} · ${fecha}
+                            </small><br>
+                            <strong style="color: #10b981; font-size: 16px;">${cot.total}</strong>
+                            ${cot.aplicaIVA ? '<small style="color: #f59e0b;"> (con IVA)</small>' : '<small style="color: #6b7280;"> (sin IVA)</small>'}
                         </div>
                         <button class="btn btn-primary" onclick="cargarCotizacion(${cot.numero})">
-                            <i class="ti ti-load"></i>
+                            <i class="ti ti-load"></i> Cargar
                         </button>
                     `;
                     list.appendChild(li);
@@ -822,6 +1061,8 @@
             document.getElementById('cliente-telefono').value = cot.cliente.telefono;
             document.getElementById('cliente-email').value = cot.cliente.email || '';
             document.getElementById('cliente-direccion').value = cot.cliente.direccion || '';
+            document.getElementById('aplicar-iva').checked = cot.aplicaIVA || false;
+            document.getElementById('porcentaje-iva').value = cot.porcentajeIVA || '16';
             document.getElementById('validez-dias').value = cot.validez.dias;
             document.getElementById('validez-horas').value = cot.validez.horas;
             
@@ -838,16 +1079,17 @@
                 row.querySelector('.subtotal').textContent = item.subtotal;
             });
             
+            toggleIVA();
             calcularTotales();
             cerrarHistorial();
-            mostrarNotificacion('Cotización cargada');
+            mostrarNotificacion('Cotización cargada exitosamente');
         }
 
         function mostrarNotificacion(msg, tipo = 'success') {
             const notif = document.getElementById('notification');
             notif.textContent = msg;
             notif.className = 'notification show ' + (tipo === 'error' ? 'error' : '');
-            setTimeout(() => notif.classList.remove('show'), 3000);
+            setTimeout(() => notif.classList.remove('show'), 4000);
         }
     </script>
 </body>
